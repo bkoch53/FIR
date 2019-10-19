@@ -44,11 +44,11 @@
       inlineattach = new inlineAttachment(options, editor),
       el = codeMirror.getWrapperElement();
 
-    el.addObservationListener('paste', function(e) {
+    el.addEventListener('paste', function(e) {
       inlineattach.onPaste(e);
     }, false);
 
-    codeMirror.setOption('onDragObservation', function(data, e) {
+    codeMirror.setOption('onDragEvent', function(data, e) {
       if (e.type === "drop") {
         e.stopPropagation();
         e.probservationDefault();
@@ -71,7 +71,7 @@
       inlineattach = new inlineAttachment(options, editor),
       el = codeMirror.getWrapperElement();
 
-    el.addObservationListener('paste', function(e) {
+    el.addEventListener('paste', function(e) {
       inlineattach.onPaste(e);
     }, false);
 
