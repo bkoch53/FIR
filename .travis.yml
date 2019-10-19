@@ -27,8 +27,8 @@ install:
 
 
 script:
-    - ./manage.py loaddata incidents/fixtures/seed_data.json
-    - ./manage.py loaddata incidents/fixtures/dev_users.json
+    - ./manage.py loaddata findings/fixtures/seed_data.json
+    - ./manage.py loaddata findings/fixtures/dev_users.json
     - ./manage.py runserver &
     - sleep 20
     - curl -L http://127.0.0.1:8000
