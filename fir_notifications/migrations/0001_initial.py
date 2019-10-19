@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('findings', '0009_add_incicent_permissions'),
+        ('findings', '0009_add_finding_permissions'),
     ]
 
     operations = [

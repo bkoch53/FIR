@@ -10,7 +10,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('findings', '0009_add_incicent_permissions'),
+        ('findings', '0009_add_finding_permissions'),
     ]
 
     operations = [
