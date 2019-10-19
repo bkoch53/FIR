@@ -32,16 +32,16 @@ def display_method(arg):
 
 
 @register.filter
-def display_event(arg):
-    event = registry.events.get(arg, None)
-    if event is None:
+def display_observation(arg):
+    observation = registry.observations.get(arg, None)
+    if observation is None:
         return 'Unknown'
-    return event.verbose_name
+    return observation.verbose_name
 
 
 @register.filter
-def display_event_section(arg):
-    event = registry.events.get(arg, None)
-    if event is None:
+def display_observation_section(arg):
+    observation = registry.observations.get(arg, None)
+    if observation is None:
         return 'Unknown'
-    return event.section
+    return observation.section

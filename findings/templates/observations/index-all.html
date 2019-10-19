@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block custom_js %}
+<script src="{% static "custom_js/finding_display.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+	{% if finding_view %}
+		<div id='all_findings' class='finding_display' data-url="{% url 'findings:all' %}">
+	{% else %}
+		<div id='all_findings' class='finding_display' data-url="{% url 'observations:all' %}">
+	{% endif %}
+			{% trans "Loading ..." %}
+		</div>
+{% endblock %}

@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('incidents', '0006_merge'),
+        ('findings', '0006_merge'),
     ]
 
     operations = [
@@ -23,10 +23,10 @@ class Migration(migrations.Migration):
                 ('type', models.CharField(max_length=100)),
                 ('body', models.TextField()),
                 ('subject', models.TextField()),
-                ('incident_category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='incidents.IncidentCategory')),
+                ('finding_category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='findings.FindingCategory')),
             ],
             options={
-                'db_table': 'incidents_abuse',
+                'db_table': 'findings_abuse',
             },
         ),
     ]

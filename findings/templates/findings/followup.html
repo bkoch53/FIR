@@ -1,0 +1,100 @@
+{% load fir_plugins %}
+{% load i18n %}
+{% load staticfiles %}
+{%  load markdown %}
+
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+	<link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "custom_css/fir_followup.css" %}" rel="stylesheet">
+    {% plugin_point 'followup_static' %}
+    <title>{% if finding.is_finding %}{%  trans "Finding" %}{%else%}{%  trans "Observation" %}{%endif%} followup [C{{finding.confidentiality}}] [{{finding.category}}] - {{finding.subject}}</title>
+</head>
+<body>
+	<div class='frame'>
+
+		<div class='header'>
+			<img src="{% static "img/logo.jpg" %}" />
+			<br style='clear:both' />
+			<div class='title'>
+				<h1 class='float'>{% if finding.is_finding %}{% trans "Finding followup" %}{%else%}{% trans "Observation followup" %}{%endif%} [C{{finding.confidentiality}}] [{{finding.category}}] - {{finding.subject}}</h1>
+				<br style='clear:both' />
+                {% trans "someone" as someone %}
+				<p>{% blocktrans with date=finding.date opened_by=finding.opened_by|default:someone %}Opened on {{ date }} by {{ opened_by }}{% endblocktrans %}</p>
+			</div>
+		</div>
+
+
+		<table class='minitable table'>
+			<tr class='slim'>
+				{% if finding_show_id %}<td class='head'>ID</td><td class='delim'>{{ finding|object_id }}</td>{% endif %}
+				{%if finding.is_finding%}
+				<td class='head'>{%  trans "Finding Leader" %}</td><td class='delim'>{{ finding.actor }}</td>
+				<td class='head'>{%  trans "Plan" %}</td><td class='delim'>{{ finding.plan }}</td>
+				{%endif%}
+				<td class='head'>{%  trans "Severity" %}</td><td class='delim'>{{ finding.severity }}</td>
+				<td class='head'>{%  trans "Category" %}</td><td class='delim'>{{ finding.category }}</td>
+				<td class='head'>{%  trans "Status" %}</td><td class='delim'><span class='label {% if finding.status == "O" %}label-info{% elif finding.status == "B" %}label-danger{% elif finding.status == "C"%}label-success{% endif %}'>{{ finding.get_status_display}}</span></td>
+
+				<td class='head'>{%  trans "Detection" %}</td><td class='delim'>{{ finding.detection }}</td>
+				<td class='head'>{%  trans "B/L" %}</td><td>{{ finding.get_business_lines_names }}</td>
+			</tr>
+		</table>
+
+
+		<br style='clear:both' />
+
+
+		<div class='description'>
+			<h3>{% trans "Summary" %}</h3>
+			<p class='artifacts'>{{ finding.description|markdown }}</p>
+		</div>
+
+		<br style='clear:both' />
+
+		<h2>{%  trans "Finding timeline" %} ({{ finding.comments_set.count }})</h2>
+
+		<table class="table table-hover table-condensed">
+			<thead>
+				<tr>
+					<th style='width:20%'>{%  trans "Date" %}</th>
+					<th>{%  trans "Author" %}</th>
+					<th>{%  trans "Comment" context "noun" %}</th>
+					<th>{%  trans "Action" %}</th>
+				</tr>
+			</thead>
+		{% for comment in comments.all %}
+		  <tr id="comment_id_{{comment.id}}">
+		  	<td style='width:10%'>{{ comment.date|date:"Y-m-d G:i" }}</td>
+		  	<td>{{ comment.opened_by|default:"someone" }}</td>
+		  	<td class='artifacts'>{{ comment.comment|markdown }}</td>
+		  	<td>{{ comment.action }}</td>
+		  </tr>
+		{% endfor %}
+
+		</table>
+
+		{% plugin_point 'followup_main' %}
+
+		<div class='files'>
+
+			<h2>{% trans "Related files" %}</h2>
+			<br style='clear:both'/>
+			{%if finding.file_set.count > 0 %}
+				<table class='table table-condensed files' style='width:auto'>
+					{% for file in finding.file_set.all %}
+						<tr>
+							<td >{{file.date|date:"d-m-Y"}}</td>
+							<td>{{ file.getfilename }}</td>
+							<td>{{ file.description }}</td>
+						</tr>
+					{%endfor%}
+				</table>
+			{% else %}
+				{% trans "No files for this finding." %}
+			{% endif %}
+		</div>
+	</div>
+
+</body>
+</html>

@@ -12,7 +12,7 @@
 {% endfor %}
 
 <div class='tab-pane' data-query-endpoint="" data-observable-post="" id='tab_threatintel'>
-No intelligence available for this incident. Please check your configuration settings.
+No intelligence available for this finding. Please check your configuration settings.
 </div>
 
 {% verbatim %}
@@ -108,7 +108,7 @@ No intelligence available for this incident. Please check your configuration set
 	</table>
 		<button class="btn btn-danger" id="send-to-yeti" href="#" role="button">Send it! <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span></button>
 		{% endverbatim %}
-			<strong>Note</strong>: Observables added this way will have the following <code>FIR</code> context <code id="fid" data-fid="{{event.id}}">{FID: {{event.id}}}</code>
+			<strong>Note</strong>: Observables added this way will have the following <code>FIR</code> context <code id="fid" data-fid="{{observation.id}}">{FID: {{observation.id}}}</code>
 		{% verbatim %}
 	</div>
 

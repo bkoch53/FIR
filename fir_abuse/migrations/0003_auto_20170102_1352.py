@@ -15,8 +15,8 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterField(
             model_name='abusetemplate',
-            name='incident_category',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='incidents.IncidentCategory'),
+            name='finding_category',
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='findings.FindingCategory'),
         ),
         migrations.AlterField(
             model_name='abusetemplate',

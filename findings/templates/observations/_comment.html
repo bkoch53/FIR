@@ -1,0 +1,14 @@
+{% load markdown %}
+<tr id="comment_id_{{comment.id}}">
+	<td class='comment-date'>{{ comment.date|date:"Y-m-d G:i" }}</td>
+	<td>{{ comment.opened_by|default:"someone" }}</td>
+	<td>{{ comment.comment|markdown }}</td>
+	<td>{{ comment.action }}</td>
+	<td>{% if can_handle_finding or user == comment.opened_by %}<a href='#' class='edit-comment' data-comment-id='{{comment.id}}'>
+		<i class="glyphicon glyphicon-pencil" ></i>
+	</a>{% endif %}</td>
+	<td>{% if can_handle_finding or user == comment.opened_by %}<form id='delete_comment_{{comment.id}}' name='delete' action="{% url 'findings:delete_comment' observation.id comment.id %}" method='POST' data-ajaxform data-action='remove' data-target='#comment_id_{{comment.id}}'>
+		{% csrf_token %}
+		<button type='submit' class='btn btn-xs btn-link icon'><i class='glyphicon glyphicon-remove'></i></button>
+	</form>{% endif %}</td>
+</tr>

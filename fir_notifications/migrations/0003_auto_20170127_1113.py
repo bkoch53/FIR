@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name='notificationpreference',
-            options={'ordering': ['user', 'event', 'method'], 'verbose_name': 'notification preference', 'verbose_name_plural': 'notification preferences'},
+            options={'ordering': ['user', 'observation', 'method'], 'verbose_name': 'notification preference', 'verbose_name_plural': 'notification preferences'},
         ),
         migrations.AlterField(
             model_name='methodconfiguration',

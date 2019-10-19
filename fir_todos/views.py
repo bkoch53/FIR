@@ -9,28 +9,28 @@ from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 
-from incidents.authorization.decorator import authorization_required
-from incidents.views import is_incident_viewer
-from incidents.models import Incident, model_created, BusinessLine
+from findings.authorization.decorator import authorization_required
+from findings.views import is_finding_viewer
+from findings.models import Finding, model_created, BusinessLine
 
 from fir_todos.models import TodoItem, TodoItemForm, TodoListTemplate
 
 
 @require_POST
 @login_required
-@authorization_required('incidents.handle_incidents', Incident, view_arg='incident_id')
-def create(request, incident_id, authorization_target=None):
+@authorization_required('findings.handle_findings', Finding, view_arg='finding_id')
+def create(request, finding_id, authorization_target=None):
     if authorization_target is None:
-        incident = get_object_or_404(
-            Incident.authorization.for_user(request.user, 'incidents.handle_incidents'),
-            pk=incident_id)
+        finding = get_object_or_404(
+            Finding.authorization.for_user(request.user, 'findings.handle_findings'),
+            pk=finding_id)
     else:
-        incident = authorization_target
+        finding = authorization_target
 
     form = TodoItemForm(request.POST, for_user=request.user)
     item = form.save(commit=False)
-    item.incident = incident
-    item.category = incident.category
+    item.finding = finding
+    item.category = finding.category
     item.done = False
     item.save()
 
@@ -38,22 +38,22 @@ def create(request, incident_id, authorization_target=None):
 
 
 @login_required
-@authorization_required('incidents.view_incidents', Incident, view_arg='incident_id')
-def list(request, incident_id, authorization_target=None):
+@authorization_required('findings.view_findings', Finding, view_arg='finding_id')
+def list(request, finding_id, authorization_target=None):
     if authorization_target is None:
-        incident = get_object_or_404(
-            Incident.authorization.for_user(request.user, 'incidents.handle_incidents'),
-            pk=incident_id)
+        finding = get_object_or_404(
+            Finding.authorization.for_user(request.user, 'findings.handle_findings'),
+            pk=finding_id)
     else:
-        incident = authorization_target
-    todos = incident.todoitem_set.all()
-    if request.user.has_perm('incidents.handle_incidents', obj=incident):
+        finding = authorization_target
+    todos = finding.todoitem_set.all()
+    if request.user.has_perm('findings.handle_findings', obj=finding):
         form = TodoItemForm(for_user=request.user)
     else:
         form = None
     return render(
         request, 'fir_todos/list.html',
-        {'todos': todos, 'form': form, 'incident_id': incident_id}
+        {'todos': todos, 'form': form, 'finding_id': finding_id}
     )
 
 
@@ -61,7 +61,7 @@ def list(request, incident_id, authorization_target=None):
 @login_required
 def delete(request, todo_id):
     todo = get_object_or_404(TodoItem, pk=todo_id)
-    if not request.user.has_perm(todo.incident, 'incidents.handle_incidents'):
+    if not request.user.has_perm(todo.finding, 'findings.handle_findings'):
         raise PermissionDenied()
     todo.delete()
 
@@ -72,8 +72,8 @@ def delete(request, todo_id):
 @login_required
 def toggle_status(request, todo_id):
     todo = get_object_or_404(TodoItem, pk=todo_id)
-    if (todo.business_line and request.user.has_perm('incidents.view_incidents', obj=todo.business_line)) or \
-            request.user.has_perm('incidents.handle_incidents', obj=todo.incident):
+    if (todo.business_line and request.user.has_perm('findings.view_findings', obj=todo.business_line)) or \
+            request.user.has_perm('findings.handle_findings', obj=todo.finding):
         todo.done = not todo.done
         if todo.done:
             todo.done_time = datetime.datetime.now()
@@ -83,23 +83,23 @@ def toggle_status(request, todo_id):
 
     referer = request.META.get('HTTP_REFERER', None)
     dashboard = False
-    if ('/incidents/' not in referer) and ('/events/' not in referer):
+    if ('/findings/' not in referer) and ('/observations/' not in referer):
         dashboard = True
 
     return render(request, 'fir_todos/single.html', {'item': todo, 'dashboard': dashboard})
 
 
 @login_required
-@user_passes_test(is_incident_viewer)
+@user_passes_test(is_finding_viewer)
 def dashboard(request):
-    bls = BusinessLine.authorization.for_user(request.user, 'incidents.view_incidents')
+    bls = BusinessLine.authorization.for_user(request.user, 'findings.view_findings')
     bl_filter = Q(business_line__in=bls) | Q(business_line__isnull=True)
-    todos = TodoItem.objects.filter(incident__isnull=False, done=False).filter(bl_filter)
-    todos = todos.select_related('incident', 'category')
-    todos = todos.order_by('-incident__date')
+    todos = TodoItem.objects.filter(finding__isnull=False, done=False).filter(bl_filter)
+    todos = todos.select_related('finding', 'category')
+    todos = todos.order_by('-finding__date')
 
     page = request.GET.get('page', 1)
-    todos_per_page = request.user.profile.incident_number
+    todos_per_page = request.user.profile.finding_number
     p = Paginator(todos, todos_per_page)
 
     try:
@@ -127,7 +127,7 @@ def get_todo_templates(category, detection, bl):
 
 def create_task(task, instance, bl=None):
     task.pk = None
-    task.incident = instance
+    task.finding = instance
     task.category = instance.category
 
     if bl:
@@ -136,8 +136,8 @@ def create_task(task, instance, bl=None):
     task.save()
 
 
-@receiver(model_created, sender=Incident)
-def new_event(sender, instance, **kwargs):
+@receiver(model_created, sender=Finding)
+def new_observation(sender, instance, **kwargs):
     todos = dict()
 
     for bl in instance.concerned_business_lines.all():

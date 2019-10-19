@@ -18,10 +18,10 @@ from rest_framework.decorators import detail_route
 from rest_framework import renderers
 
 
-from fir_api.serializers import UserSerializer, IncidentSerializer, ArtifactSerializer, FileSerializer
-from fir_api.permissions import IsIncidentHandler
+from fir_api.serializers import UserSerializer, FindingSerializer, ArtifactSerializer, FileSerializer
+from fir_api.permissions import IsFindingHandler
 from fir_artifacts.files import handle_uploaded_file, do_download
-from incidents.models import Incident, Artifact, Comments, File
+from findings.models import Finding, Artifact, Comments, File
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -33,13 +33,13 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, IsAdminUser)
 
 
-class IncidentViewSet(viewsets.ModelViewSet):
+class FindingViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows creation of, viewing, and closing of incidents
+    API endpoint that allows creation of, viewing, and closing of findings
     """
-    queryset = Incident.objects.all()
-    serializer_class = IncidentSerializer
-    permission_classes = (IsAuthenticated, IsIncidentHandler)
+    queryset = Finding.objects.all()
+    serializer_class = FindingSerializer
+    permission_classes = (IsAuthenticated, IsFindingHandler)
 
     def perform_create(self, serializer):
         instance = serializer.save(opened_by=self.request.user)
@@ -57,13 +57,13 @@ class ArtifactViewSet(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSe
     serializer_class = ArtifactSerializer
     lookup_field = 'value'
     lookup_value_regex = '.+'
-    permission_classes = (IsAuthenticated, IsIncidentHandler)
+    permission_classes = (IsAuthenticated, IsFindingHandler)
 
 
 class FileViewSet(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = File.objects.all()
     serializer_class = FileSerializer
-    permission_classes = (IsAuthenticated, IsIncidentHandler)
+    permission_classes = (IsAuthenticated, IsFindingHandler)
 
     @detail_route(renderer_classes=[renderers.StaticHTMLRenderer])
     def download(self, request, pk):
@@ -72,13 +72,13 @@ class FileViewSet(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet):
     @detail_route(methods=["POST"])
     def upload(self, request, pk):
         files = request.data['files']
-        incident = get_object_or_404(Incident, pk=pk)
+        finding = get_object_or_404(Finding, pk=pk)
         files_added = []
         for i, file in enumerate(files):
             file_obj = FileWrapper(StringIO.StringIO(file['content']))
             file_obj.name = file['filename']
             description = file['description']
-            f = handle_uploaded_file(file_obj, description, incident)
+            f = handle_uploaded_file(file_obj, description, finding)
             files_added.append(f)
         resp_data = FileSerializer(files_added, many=True, context={'request': request}).data
         return HttpResponse(JSONRenderer().render(resp_data), content_type='application/json')

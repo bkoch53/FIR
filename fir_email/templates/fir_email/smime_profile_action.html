@@ -46,10 +46,10 @@
 </div>
 <script>
         window.onload = function(){
-            $('.notification-method-form').on('fir.form.success', function (event) {
+            $('.notification-method-form').on('fir.form.success', function (observation) {
                 console.log(this);
                 $(this).modal('hide');
-                event.stopPropagation();
+                observation.stopPropagation();
             });
         };
     </script>

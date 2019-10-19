@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('incidents', '0009_add_incicent_permissions'),
+        ('findings', '0009_add_incicent_permissions'),
         ('fir_notifications', '0001_initial'),
     ]
 
@@ -20,9 +20,9 @@ class Migration(migrations.Migration):
             name='NotificationPreference',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('event', models.CharField(max_length=60, verbose_name='event')),
+                ('observation', models.CharField(max_length=60, verbose_name='observation')),
                 ('method', models.CharField(max_length=60, verbose_name='method')),
-                ('business_lines', models.ManyToManyField(blank=True, related_name='_notificationpreference_business_lines_+', to='incidents.BusinessLine', verbose_name='business lines')),
+                ('business_lines', models.ManyToManyField(blank=True, related_name='_notificationpreference_business_lines_+', to='findings.BusinessLine', verbose_name='business lines')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='notification_preferences', to=settings.AUTH_USER_MODEL, verbose_name='user')),
             ],
             options={
@@ -32,10 +32,10 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterUniqueTogether(
             name='notificationpreference',
-            unique_together=set([('user', 'event', 'method')]),
+            unique_together=set([('user', 'observation', 'method')]),
         ),
         migrations.AlterIndexTogether(
             name='notificationpreference',
-            index_together=set([('user', 'event', 'method')]),
+            index_together=set([('user', 'observation', 'method')]),
         ),
     ]

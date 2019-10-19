@@ -12,7 +12,7 @@
             <thead>
                 <tr>
                     <th>{%  trans "Section" %}</th>
-                    <th>{%  trans "Event" %}</th>
+                    <th>{%  trans "Observation" %}</th>
                     <th>{%  trans "Method" %}</th>
                     <th>{%  trans "Business lines" %}</th>
                     <th></th>
@@ -22,8 +22,8 @@
             <tbody>
               {% for preference in preferences %}
                   <tr>
-                    <td>{{ preference.event|display_event_section }}</td>
-                    <td>{{ preference.event|display_event }}</td>
+                    <td>{{ preference.observation|display_observation_section }}</td>
+                    <td>{{ preference.observation|display_observation }}</td>
                     <td>{{ preference.method|display_method }}</td>
                     <td>{{ preference.business_lines.all|join:', ' }}</td>
                       <td><a href="#" id="edit_subscription_{{preference.pk}}" class="modal-async" data-target='#notification_preference_modals' data-url="{% url 'notifications:edit-subscription' preference.pk %}"><span class="glyphicon glyphicon-pencil" title="{% trans "Edit" %}"></span></a></td>

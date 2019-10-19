@@ -37,7 +37,7 @@ $(function () {
     });
 
     // Avoid showing the real one
-    e.preventDefault();
+    e.probservationDefault();
 
     // Display contextual menu
     $(".custom-menu")
@@ -69,7 +69,7 @@ $(function () {
     $(".custom-menu").hide(100);
   });
 
-  // Event handler for "Send Abuse"
+  // Observation handler for "Send Abuse"
   function get_email_template(button) {
     url = $("#send_abuse_link").data('url')
 
@@ -115,7 +115,7 @@ $(function () {
 
     editors["abuse_body"] = init_simplemde($("#abuse_body"));
     // Activate 'Send Email' button
-    $('#send_abuse_email').click(function (event) {
+    $('#send_abuse_email').click(function (observation) {
       send_email();
     });
     $('#sendAbuseEmail').on('shown.bs.modal', function (e) {

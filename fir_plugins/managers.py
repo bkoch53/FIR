@@ -3,7 +3,7 @@ from fir_plugins.querysets import QuerySetSequence
 
 
 class LinkableManager(BaseManager):
-    def __init__(self, instance, user=None, permission='incidents.view_incidents'):
+    def __init__(self, instance, user=None, permission='findings.view_findings'):
         self.linkable = instance
         self.user = user
         self.permission = permission

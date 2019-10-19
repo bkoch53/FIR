@@ -19,7 +19,7 @@ def do_upload_file(request, content_type, object_id):
     if request.method == 'POST':
         object_type = ContentType.objects.get(pk=content_type)
         obj = get_object_or_404(object_type.model_class(), pk=object_id)
-        if not request.user.has_perm('incidents.handle_incidents', obj=obj):
+        if not request.user.has_perm('findings.handle_findings', obj=obj):
             raise PermissionDenied()
         descriptions = request.POST.getlist('description')
         files = request.FILES.getlist('file')
@@ -58,7 +58,7 @@ def handle_uploaded_file(file, description, obj):
 
 def do_download(request, file_id):
     f = get_object_or_404(File, pk=file_id)
-    if not request.user.has_perm('incidents.view_incidents', obj=f.get_related()):
+    if not request.user.has_perm('findings.view_findings', obj=f.get_related()):
         raise PermissionDenied()
     wrapper = FileWrapper(f.file)
     content_type = mimetypes.guess_type(f.file.name)
@@ -72,7 +72,7 @@ def do_download(request, file_id):
 def do_download_archive(request, content_type, object_id):
     object_type = ContentType.objects.get(pk=content_type)
     obj = get_object_or_404(object_type.model_class(), pk=object_id)
-    if not request.user.has_perm('incidents.view_incidents', obj=obj):
+    if not request.user.has_perm('findings.view_findings', obj=obj):
         raise PermissionDenied()
     if obj.file_set.count() == 0:
         raise Http404
@@ -95,7 +95,7 @@ def do_download_archive(request, content_type, object_id):
 def do_remove_file(request, file_id):
     if request.method == "POST":
         f = get_object_or_404(File, pk=file_id)
-        if not request.user.has_perm('incidents.handle_incidents', obj=f.get_related()):
+        if not request.user.has_perm('findings.handle_findings', obj=f.get_related()):
             raise PermissionDenied()
         f.file.delete()
         f.delete()

@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('incidents', '0009_add_incicent_permissions'),
+        ('findings', '0009_add_incicent_permissions'),
     ]
 
     operations = [
@@ -34,11 +34,11 @@ class Migration(migrations.Migration):
             name='NotificationTemplate',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('event', models.CharField(max_length=60, verbose_name='event')),
+                ('observation', models.CharField(max_length=60, verbose_name='observation')),
                 ('subject', models.CharField(blank=True, default='', max_length=200, verbose_name='subject')),
                 ('short_description', models.TextField(blank=True, default='', verbose_name='short description')),
                 ('description', models.TextField(blank=True, default='', verbose_name='description')),
-                ('business_lines', models.ManyToManyField(blank=True, related_name='_notificationtemplate_business_lines_+', to='incidents.BusinessLine', verbose_name='business line')),
+                ('business_lines', models.ManyToManyField(blank=True, related_name='_notificationtemplate_business_lines_+', to='findings.BusinessLine', verbose_name='business line')),
             ],
             options={
                 'verbose_name': 'notification template',

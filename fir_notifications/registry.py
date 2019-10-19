@@ -9,7 +9,7 @@ from fir_notifications.methods.jabber import XmppMethod
 
 
 @python_2_unicode_compatible
-class RegisteredEvent(object):
+class RegisteredObservation(object):
     def __init__(self, name, model, verbose_name=None, section=None):
         self.name = name
         if section is None:
@@ -26,7 +26,7 @@ class RegisteredEvent(object):
 class Notifications(object):
     def __init__(self):
         self.methods = OrderedDict()
-        self.events = OrderedDict()
+        self.observations = OrderedDict()
 
     def register_method(self, method, name=None, verbose_name=None):
         """
@@ -46,28 +46,28 @@ class Notifications(object):
             method.verbose_name = method.name
         self.methods[method.name] = method
 
-    def register_event(self, name, signal, model, callback, verbose_name=None, section=None):
+    def register_observation(self, name, signal, model, callback, verbose_name=None, section=None):
         """
-        Registers a notification event
+        Registers a notification observation
         Args:
-            name: event name
+            name: observation name
             signal: Django signal to listen to
-            model: Django model sending the signal (and event)
+            model: Django model sending the signal (and observation)
             callback: Django signal handler
-            verbose_name: verbose name of the event
+            verbose_name: verbose name of the observation
             section: section in the user preference panel (default model application name)
         """
         if name in settings.NOTIFICATIONS_DISABLED_EVENTS:
             return
         if verbose_name is None:
             verbose_name = name
-        self.events[name] = RegisteredEvent(name, model, verbose_name=verbose_name, section=section)
+        self.observations[name] = RegisteredObservation(name, model, verbose_name=verbose_name, section=section)
 
         signal.connect(callback, sender=model, dispatch_uid="fir_notifications.{}".format(name))
 
-    def get_event_choices(self):
+    def get_observation_choices(self):
         results = OrderedDict()
-        for obj in self.events.values():
+        for obj in self.observations.values():
             if obj.section not in results:
                 results[obj.section] = list()
             results[obj.section].append((obj.name, obj.verbose_name))

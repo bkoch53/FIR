@@ -9,7 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import python_2_unicode_compatible
 
 from fir_plugins.links import registry
-from incidents.models import Incident, Comments
+from findings.models import Finding, Comments
 
 
 @python_2_unicode_compatible
@@ -28,12 +28,12 @@ class TemplateRelation(object):
         self.can_view = False
         self.can_edit = False
         if hasattr(self.object, 'has_perm'):
-            if self.object.has_perm(self.user, 'incidents.view_incidents'):
+            if self.object.has_perm(self.user, 'findings.view_findings'):
                 self.can_view = True
             else:
                 return
         if hasattr(self.relation.source, 'has_perm'):
-            if self.relation.source.has_perm(self.user, 'incidents.handle_incidents'):
+            if self.relation.source.has_perm(self.user, 'findings.handle_findings'):
                 self.can_edit = True
 
 
@@ -61,10 +61,10 @@ class TemplateRelation(object):
 
     @property
     def object_type(self):
-        if isinstance(self.object, Incident):
-            if self.object.is_incident:
-                return _('Incident')
-            return _('Event')
+        if isinstance(self.object, Finding):
+            if self.object.is_finding:
+                return _('Finding')
+            return _('Observation')
         return self.object._meta.verbose_name
 
     def __str__(self):
@@ -115,11 +115,11 @@ class Relation(models.Model):
     objects = RelationQuerySet.as_manager()
 
 
-@receiver(post_save, sender=Incident)
-def parse_incident(sender, instance, created, **kwargs):
+@receiver(post_save, sender=Finding)
+def parse_finding(sender, instance, created, **kwargs):
     Relation.objects.update_relations(instance, instance.description)
 
 
 @receiver(post_save, sender=Comments)
 def parse_comment(sender, instance, created, **kwargs):
-    Relation.objects.update_relations(instance.incident, instance.comment)
+    Relation.objects.update_relations(instance.finding, instance.comment)

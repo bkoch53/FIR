@@ -6,9 +6,9 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import Template
 from json import dumps
 
-from incidents.authorization.decorator import authorization_required
-from incidents.views import is_incident_handler
-from incidents.models import Incident, BusinessLine
+from findings.authorization.decorator import authorization_required
+from findings.views import is_finding_handler
+from findings.models import Finding, BusinessLine
 
 from fir_alerting.models import RecipientTemplate, CategoryTemplate, EmailForm
 from fir_email.helpers import send
@@ -31,16 +31,16 @@ def emailform(request):
 
 
 @login_required
-@authorization_required('incidents.handle_incidents', Incident, view_arg='incident_id')
-def get_template(request, incident_id, template_type, bl=None, authorization_target=None):
+@authorization_required('findings.handle_findings', Finding, view_arg='finding_id')
+def get_template(request, finding_id, template_type, bl=None, authorization_target=None):
     if authorization_target is None:
-        i = get_object_or_404(Incident.authorization.for_user(request.user, 'incidents.handle_incidents'),
-                              pk=incident_id)
+        i = get_object_or_404(Finding.authorization.for_user(request.user, 'findings.handle_findings'),
+                              pk=finding_id)
     else:
         i = authorization_target
 
     try:
-        cat_template = CategoryTemplate.objects.get(incident_category=i.category, type=template_type)
+        cat_template = CategoryTemplate.objects.get(finding_category=i.category, type=template_type)
     except Exception, e:
         cat_template = None
 
@@ -85,7 +85,7 @@ def get_template(request, incident_id, template_type, bl=None, authorization_tar
         'bl': bl_name,
         'phishing_url': i.subject.replace('http://', "hxxp://").replace('https://', 'hxxps://'),
         'artifacts': artifacts,
-        'incident_id': i.id,
+        'finding_id': i.id,
         'enrich': enrich
     })
 
@@ -103,7 +103,7 @@ def get_template(request, incident_id, template_type, bl=None, authorization_tar
 
 
 @login_required
-@user_passes_test(is_incident_handler)
+@user_passes_test(is_finding_handler)
 def send_email(request):
     if request.method == 'POST':
         try:

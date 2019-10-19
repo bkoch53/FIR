@@ -18,10 +18,10 @@ class EmailMethod(NotificationMethod):
         if hasattr(settings, 'EMAIL_FROM') and settings.EMAIL_FROM is not None:
             self.server_configured = True
 
-    def send(self, event, users, instance, paths):
+    def send(self, observation, users, instance, paths):
         messages = []
         for user, templates in users.items():
-            if not self.enabled(event, user, paths) or not user.email:
+            if not self.enabled(observation, user, paths) or not user.email:
                 continue
             template = self._get_template(templates)
             if template is None:

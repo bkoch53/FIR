@@ -2,12 +2,12 @@
 
 # What is FIR? Who is it for?
 
-FIR (Fast Incident Response) is an cybersecurity incident management platform designed with agility and speed in mind. It allows for easy creation, tracking, and reporting of cybersecurity incidents.
+FIR (Fast Finding Response) is an cybersecurity finding management platform designed with agility and speed in mind. It allows for easy creation, tracking, and reporting of cybersecurity findings.
 
-FIR is for anyone needing to track cybersecurity incidents (CSIRTs, CERTs, SOCs, etc.). It was tailored to suit our needs and our team's habits, but we put a great deal of effort into making it as generic as possible before releasing it so that other teams around the world may also use it and customize it as they see fit.
+FIR is for anyone needing to track cybersecurity findings (CSIRTs, CERTs, SOCs, etc.). It was tailored to suit our needs and our team's habits, but we put a great deal of effort into making it as generic as possible before releasing it so that other teams around the world may also use it and customize it as they see fit.
 
 ![dashboard](https://github.com/certsocietegenerale/FIR/wiki/screenshots/dashboard.png)
-![incident details](https://github.com/certsocietegenerale/FIR/wiki/screenshots/incident_details.png)
+![finding details](https://github.com/certsocietegenerale/FIR/wiki/screenshots/finding_details.png)
 
 See the wiki for the [user manual](https://github.com/certsocietegenerale/FIR/wiki/User-Manual) and more screenshots !
 

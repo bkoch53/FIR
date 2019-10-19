@@ -6,9 +6,9 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import Template
 from json import dumps
 
-from incidents.authorization.decorator import authorization_required
-from incidents.views import is_incident_handler
-from incidents.models import Incident
+from findings.authorization.decorator import authorization_required
+from findings.views import is_finding_handler
+from findings.models import Finding
 from fir_artifacts.models import Artifact
 from fir_email.helpers import send
 from fir_abuse.models import AbuseTemplate, AbuseContact, EmailForm
@@ -24,7 +24,7 @@ def emailform(request):
 
 
 @login_required
-@user_passes_test(is_incident_handler)
+@user_passes_test(is_finding_handler)
 def send_email(request):
     if request.method == 'POST':
         try:
@@ -46,7 +46,7 @@ def send_email(request):
 
 
 @login_required
-@user_passes_test(is_incident_handler)
+@user_passes_test(is_finding_handler)
 def task_state(request, task_id):
     if request.method == 'GET' and task_id:
         task = enrich_artifact.AsyncResult(task_id)
@@ -55,11 +55,11 @@ def task_state(request, task_id):
 
 
 @login_required
-@authorization_required('incidents.handle_incidents', Incident, view_arg='incident_id')
-def get_template(request, incident_id, artifact_id, authorization_target=None):
+@authorization_required('findings.handle_findings', Finding, view_arg='finding_id')
+def get_template(request, finding_id, artifact_id, authorization_target=None):
     if authorization_target is None:
-        i = get_object_or_404(Incident.authorization.for_user(request.user, 'incidents.handle_incidents'),
-                pk=incident_id)
+        i = get_object_or_404(Finding.authorization.for_user(request.user, 'findings.handle_findings'),
+                pk=finding_id)
     else:
         i = authorization_target
 
@@ -91,9 +91,9 @@ def get_template(request, incident_id, artifact_id, authorization_target=None):
     c = Context({
         'subject': i.subject.replace('http://', "hxxp://").replace('https://', 'hxxps://'),
         'artifacts': artifacts,
-        'incident_id': i.id,
+        'finding_id': i.id,
         'bls': i.get_business_lines_names(),
-        'incident_category': i.category.name,
+        'finding_category': i.category.name,
         'artifact': artifact.value.replace('http://', "hxxp://").replace('https://', 'hxxps://'),
         'enrichment': enrichment.raw if enrichment else ''
     })
@@ -123,19 +123,19 @@ def get_best_record(artifact_type, category, model, filters={}):
         collection = model.objects
 
     q_type = Q(type=artifact_type) | Q(type='')
-    q_incident_category = Q(incident_category=category) | Q(incident_category=None)
+    q_finding_category = Q(finding_category=category) | Q(finding_category=None)
 
     result = None
     score = 0
 
-    for record in collection.filter(q_type & q_incident_category):
-        if record.type and record.incident_category:
+    for record in collection.filter(q_type & q_finding_category):
+        if record.type and record.finding_category:
             return record
-        elif record.type == '' and record.incident_category:
+        elif record.type == '' and record.finding_category:
             if score < 3:
                 result = record
                 score = 3
-        elif record.type and record.incident_category is None:
+        elif record.type and record.finding_category is None:
             if score < 2:
                 result = record
                 score = 2

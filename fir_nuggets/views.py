@@ -5,18 +5,18 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse
 from json import dumps
 
-from incidents.authorization.decorator import authorization_required
-from incidents.models import Incident
+from findings.authorization.decorator import authorization_required
+from findings.models import Finding
 from fir_nuggets.models import Nugget, NuggetForm
 
 
 @login_required
-@authorization_required('incidents.view_incidents', Incident, view_arg='event_id')
-def list(request, event_id, authorization_target=None):
+@authorization_required('findings.view_findings', Finding, view_arg='observation_id')
+def list(request, observation_id, authorization_target=None):
     if authorization_target is None:
         e = get_object_or_404(
-            Incident.authorization.for_user(request.user, 'incidents.handle_incidents'),
-            pk=event_id)
+            Finding.authorization.for_user(request.user, 'findings.handle_findings'),
+            pk=observation_id)
     else:
         e = authorization_target
     nuggets = e.nugget_set.all().order_by('start_timestamp')
@@ -24,12 +24,12 @@ def list(request, event_id, authorization_target=None):
 
 
 @login_required
-@authorization_required('incidents.handle_incidents', Incident, view_arg='event_id')
-def new(request, event_id, authorization_target=None):
+@authorization_required('findings.handle_findings', Finding, view_arg='observation_id')
+def new(request, observation_id, authorization_target=None):
     if authorization_target is None:
         e = get_object_or_404(
-            Incident.authorization.for_user(request.user, 'incidents.handle_incidents'),
-            pk=event_id)
+            Finding.authorization.for_user(request.user, 'findings.handle_findings'),
+            pk=observation_id)
     else:
         e = authorization_target
 
@@ -41,7 +41,7 @@ def new(request, event_id, authorization_target=None):
 
         if nugget_form.is_valid():
             nugget = nugget_form.save(commit=False)
-            nugget.incident = e
+            nugget.finding = e
             nugget.found_by = request.user
             nugget.save()
 
@@ -57,18 +57,18 @@ def new(request, event_id, authorization_target=None):
 
             return HttpResponse(dumps(ret), content_type='application/json')
         else:
-            errors = render_to_string("fir_nuggets/nugget_form.html", {'mode': 'new', 'nugget_form': nugget_form, 'event_id': e.id})
+            errors = render_to_string("fir_nuggets/nugget_form.html", {'mode': 'new', 'nugget_form': nugget_form, 'observation_id': e.id})
             ret = {'status': 'error', 'data': errors}
             return HttpResponse(dumps(ret), content_type="application/json")
 
-    return render(request, "fir_nuggets/nugget_form.html", {'nugget_form': nugget_form, 'mode': 'new', 'event_id': event_id})
+    return render(request, "fir_nuggets/nugget_form.html", {'nugget_form': nugget_form, 'mode': 'new', 'observation_id': observation_id})
 
 
 @login_required
 def edit(request, nugget_id):
     n = get_object_or_404(Nugget, pk=nugget_id)
-    e = n.incident
-    if not request.user.has_perm('incidents.handle_incidents', obj=e):
+    e = n.finding
+    if not request.user.has_perm('findings.handle_findings', obj=e):
         ret = {'status': 'error', 'data': ['Permission denied', ]}
         return HttpResponse(dumps(ret), content_type="application/json")
     if request.method == "GET":
@@ -98,8 +98,8 @@ def edit(request, nugget_id):
 @login_required
 def delete(request, nugget_id):
     n = get_object_or_404(Nugget, pk=nugget_id)
-    e = n.incident
-    if not request.user.has_perm('incidents.handle_incidents', obj=e):
+    e = n.finding
+    if not request.user.has_perm('findings.handle_findings', obj=e):
         ret = {'status': 'error', 'data': ['Permission denied', ]}
         return HttpResponse(dumps(ret), content_type="application/json")
     n.delete()

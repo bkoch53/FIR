@@ -3,20 +3,20 @@ from django.contrib.contenttypes.models import ContentType
 from fir_notifications.registry import registry
 from fir_notifications.tasks import handle_notification
 
-from incidents.models import BusinessLine
+from findings.models import BusinessLine
 
 
-def notification_event(event, signal, model, verbose_name=None, section=None):
+def notification_observation(observation, signal, model, verbose_name=None, section=None):
     """
-    Decorates a Django signal handler to create a notification event
+    Decorates a Django signal handler to create a notification observation
     Args:
-        event: event name
+        observation: observation name
         signal: Django signal to listen to
-        model: Django model sending the signal (and event)
-        verbose_name: verbose name of the notification event
+        model: Django model sending the signal (and observation)
+        verbose_name: verbose name of the notification observation
         section: section in the user preference panel (default model application name)
 
-    The signal handler function must return a tuple (model instance, business lines list concerned by the event)
+    The signal handler function must return a tuple (model instance, business lines list concerned by the observation)
 
     """
     def decorator_func(func):
@@ -31,9 +31,9 @@ def notification_event(event, signal, model, verbose_name=None, section=None):
             handle_notification.delay(ContentType.objects.get_for_model(instance).pk,
                                       instance.pk,
                                        business_lines,
-                                      event)
+                                      observation)
             return instance, business_lines
 
-        registry.register_event(event, signal, model, wrapper_func, verbose_name, section)
+        registry.register_observation(observation, signal, model, wrapper_func, verbose_name, section)
         return wrapper_func
     return decorator_func

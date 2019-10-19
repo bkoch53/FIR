@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('fir_artifacts', '0001_initial'),
-        ('incidents', '0001_initial')
+        ('findings', '0001_initial')
     ]
 
     operations = [

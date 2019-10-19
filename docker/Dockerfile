@@ -31,7 +31,7 @@ RUN addgroup fir && \
 
 WORKDIR /app
 
-RUN git clone https://github.com/certsocietegenerale/FIR.git && \
+RUN git clone https://github.com/bkoch53/FIR.git && \
     chown -R fir:fir /app/FIR && \
     cd FIR && \
     pip install -r requirements.txt && \
@@ -44,8 +44,8 @@ ENV USER fir
 WORKDIR /app/FIR
 
 RUN ./manage.py migrate && \
-    ./manage.py loaddata incidents/fixtures/seed_data.json && \
-    ./manage.py loaddata incidents/fixtures/dev_users.json
+    ./manage.py loaddata findings/fixtures/seed_data.json && \
+    ./manage.py loaddata findings/fixtures/dev_users.json
 
 EXPOSE 8000
 ENTRYPOINT ["/app/FIR/manage.py"]

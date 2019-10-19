@@ -4,7 +4,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
 
-from incidents.models import BusinessLine
+from findings.models import BusinessLine
 
 from fir_notifications.registry import registry
 from fir_notifications.models import MethodConfiguration, NotificationPreference
@@ -29,7 +29,7 @@ class MethodConfigurationForm(forms.Form):
 
 
 class NotificationTemplateForm(forms.ModelForm):
-    event = forms.ChoiceField(choices=registry.get_event_choices())
+    observation = forms.ChoiceField(choices=registry.get_observation_choices())
 
     class Meta:
         fields = '__all__'
@@ -43,18 +43,18 @@ class NotificationPreferenceForm(forms.ModelForm):
             self.user = instance.user
         if instance is None and kwargs.get('data', None) is not None:
             data = kwargs.get('data')
-            event = data.get('event', None)
+            observation = data.get('observation', None)
             method = data.get('method', None)
-            if event and method and self.user:
+            if observation and method and self.user:
                 try:
-                    kwargs['instance'] = NotificationPreference.objects.get(user=self.user, event=event, method=method)
+                    kwargs['instance'] = NotificationPreference.objects.get(user=self.user, observation=observation, method=method)
                 except (NotificationPreference.DoesNotExist, NotificationPreference.MultipleObjectsReturned):
                     pass
         super(NotificationPreferenceForm, self).__init__(*args, **kwargs)
         self.fields['business_lines'].queryset = BusinessLine.authorization.for_user(self.user,
-                                                                                     'incidents.view_incidents')
+                                                                                     'findings.view_findings')
         if instance is not None:
-            self.fields['event'].disabled = True
+            self.fields['observation'].disabled = True
             self.fields['method'].disabled = True
 
     def clean_user(self):
@@ -63,7 +63,7 @@ class NotificationPreferenceForm(forms.ModelForm):
         return self.user
 
     user = forms.ModelChoiceField(queryset=get_user_model().objects.all(), widget=forms.HiddenInput(), required=False)
-    event = forms.ChoiceField(choices=registry.get_event_choices(), label=_('Event'))
+    observation = forms.ChoiceField(choices=registry.get_observation_choices(), label=_('Observation'))
     method = forms.ChoiceField(choices=registry.get_method_choices(), label=_('Method'))
     business_lines = forms.ModelMultipleChoiceField(BusinessLine.objects.all(), label=_('Business lines'))
 

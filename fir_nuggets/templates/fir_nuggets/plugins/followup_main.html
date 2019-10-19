@@ -1,7 +1,7 @@
 {% load fir_nuggets %}
 {% load i18n %}
 
-{% if incident.nugget_set.count > 0 %}
+{% if finding.nugget_set.count > 0 %}
 <div class='investigation-timeline'>
 <h2>{% trans "Investigation timeline" %}</h2>
 
@@ -13,7 +13,7 @@
 		<th>{% trans "Remark" %}</th>
 	 </tr>
 
-	{% for n in incident.nugget_set.all|has_not:"start_timestamp"%}
+	{% for n in finding.nugget_set.all|has_not:"start_timestamp"%}
 		<tr id='nugget_{{n.id}}'>
 			<td><span class='nugget_source'>{{n.source}}</span></td>
 			<td><span class='nugget_interpretation'>{{n.interpretation}}</span></td>
@@ -31,7 +31,7 @@
 			<th>{% trans "Interpretation" %}</th>
 		 </tr>
 
-		{% for n in incident.nugget_set.all|order_by:"start_timestamp"|has:"start_timestamp"%}
+		{% for n in finding.nugget_set.all|order_by:"start_timestamp"|has:"start_timestamp"%}
 			<tr id='nugget_{{n.id}}'>
 				<td class='nugget_timestamp'><span>{{n.start_timestamp|date:"Y-m-d G:i"}} {% if n.end_timestamp%} - {{n.end_timestamp|date:"Y-m-d G:i"}}{% endif%}</span></td>
 				<td><span class='nugget_source'>{{n.source}}</span></td>

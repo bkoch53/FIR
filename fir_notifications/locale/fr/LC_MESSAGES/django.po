@@ -42,7 +42,7 @@ msgstr "La préférence de notification doit être reliée à un utilisateur."
 
 #: forms.py:66 models.py:66 models.py:74 models.py:82 models.py:92
 #: templates/fir_notifications/subscriptions.html:15
-msgid "Event"
+msgid "Observation"
 msgstr "Événement"
 
 #: forms.py:67 templates/fir_notifications/subscriptions.html:16
@@ -74,7 +74,7 @@ msgid "method configurations"
 msgstr "configurations de méthode"
 
 #: models.py:31 models.py:46
-msgid "event"
+msgid "observation"
 msgstr "événement"
 
 #: models.py:33
@@ -114,40 +114,40 @@ msgid "notification preferences"
 msgstr "préférences de notification"
 
 #: models.py:65
-msgid "Event created"
+msgid "Observation created"
 msgstr "Événement créé"
 
 #: models.py:73
-msgid "Event updated"
+msgid "Observation updated"
 msgstr "Événement mis à jour"
 
 #: models.py:81
-msgid "Event commented"
+msgid "Observation commented"
 msgstr "Événement commenté"
 
 #: models.py:91
-msgid "Event status changed"
+msgid "Observation status changed"
 msgstr "Statut de l'événement changé"
 
 #: models.py:99
-msgid "Incident created"
-msgstr "Incident créé"
+msgid "Finding created"
+msgstr "Finding créé"
 
 #: models.py:100 models.py:108 models.py:116 models.py:126
-msgid "Incident"
-msgstr "Incident"
+msgid "Finding"
+msgstr "Finding"
 
 #: models.py:107
-msgid "Incident updated"
-msgstr "Incident mis à jour"
+msgid "Finding updated"
+msgstr "Finding mis à jour"
 
 #: models.py:115
-msgid "Incident commented"
-msgstr "Incident commenté"
+msgid "Finding commented"
+msgstr "Finding commenté"
 
 #: models.py:125
-msgid "Incident status changed"
-msgstr "Statut de l'incident changé"
+msgid "Finding status changed"
+msgstr "Statut de l'finding changé"
 
 #: templates/fir_notifications/actions.html:3
 #, python-format

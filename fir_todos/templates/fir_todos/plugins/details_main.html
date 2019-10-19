@@ -1,14 +1,14 @@
 {% load i18n %}
 {% load authorization %}
 
-{%  has_perm 'incidents.handle_incidents' obj=event as can_handle_incident %}
+{%  has_perm 'findings.handle_findings' obj=observation as can_handle_finding %}
 <div class='widget hidden' id='fir_todos'>
 	<h4 class='widget'>{% trans "To-Do List" %}</h4>
 
-	<div id='fir_todos_list' data-url="{% url 'todos:list' event.id %}">
+	<div id='fir_todos_list' data-url="{% url 'todos:list' observation.id %}">
 		{% trans "Loading ..." %}
 	</div>
-    {% if can_handle_incident %}
+    {% if can_handle_finding %}
 	<a href='#' id='fir_todos_add'>+ {% trans "Add To-Do Item" %}</a>
     {% endif %}
 </div>

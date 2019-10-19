@@ -9,7 +9,7 @@
 				<h4 id="addNuggetLabel" class="modal-title">{% trans "Add Nugget" %}</h4>
 		  	</div>
 		  	{% if mode == 'new' %}
-				<form id="nugget_form" action="{% url 'nuggets:new' event_id %}" method="POST">
+				<form id="nugget_form" action="{% url 'nuggets:new' observation_id %}" method="POST">
 			{% elif mode == 'edit' %}
 				<form id="nugget_form" action="{% url 'nuggets:edit' nugget_id %}" method="POST">
 			{% endif %}

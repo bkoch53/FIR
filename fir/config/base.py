@@ -90,7 +90,7 @@ if TF_INSTALLED:
 # Authentication and authorization backends
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',  # default
-    'incidents.authorization.ObjectPermissionBackend',
+    'findings.authorization.ObjectPermissionBackend',
 )
 
 # Absolute filesystem path to the directory that will hold user-uploaded files
@@ -117,7 +117,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'fir_plugins',
-    'incidents',
+    'findings',
     'fir_artifacts',
     'treebeard',
     'fir_email'
@@ -169,16 +169,16 @@ TEMPLATES = [
     }
 ]
 
-# Show incident IDs in views?
+# Show finding IDs in views?
 INCIDENT_SHOW_ID = False
 
-# Incident ID prefix in views and links
+# Finding ID prefix in views and links
 INCIDENT_ID_PREFIX = "FID:"
 
-# Permission added to the incident created by user, None for no permission
-INCIDENT_CREATOR_PERMISSION = 'incidents.view_incidents'
+# Permission added to the finding created by user, None for no permission
+INCIDENT_CREATOR_PERMISSION = 'findings.view_findings'
 
-# If you can see an event/incident, you can comment it!
+# If you can see an observation/finding, you can comment it!
 INCIDENT_VIEWER_CAN_COMMENT = True
 
 
@@ -216,15 +216,15 @@ USER_SELF_SERVICE = {
     'CHANGE_EMAIL': True,
     # User can change his first and last name
     'CHANGE_NAMES': True,
-    # User can change his profile values (number of incidents per page, hide closed incidents)
+    # User can change his profile values (number of findings per page, hide closed findings)
     'CHANGE_PROFILE': True,
     # User can change his password
     'CHANGE_PASSWORD': True
 }
 
-# Put notification events you don't want in this tuple
-# Example: NOTIFICATIONS_DISABLED_EVENTS = ('event:created', 'incident:created')
+# Put notification observations you don't want in this tuple
+# Example: NOTIFICATIONS_DISABLED_EVENTS = ('observation:created', 'finding:created')
 NOTIFICATIONS_DISABLED_EVENTS = ()
 
-# Send 'incident:*' notification events for both Event and Incident if True
+# Send 'finding:*' notification observations for both Observation and Finding if True
 NOTIFICATIONS_MERGE_INCIDENTS_AND_EVENTS = False

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block header%}<h1>{% blocktrans with artifact_display=artifact.get_type_display artifact_value=artifact.value %}List of findings including {{artifact_display}} {{artifact_value}}{% endblocktrans %}</h1>{%endblock%}
+{% block content %}
+	{% if finding_list %}
+	<table class="table table-hover">
+
+			<thead>
+				<tr>
+					{% if finding_show_id %}
+						<th>ID</th>
+					{% endif %}
+					<th>{% trans "Date" %}</th>
+					<th>{% trans "Subject" %}</th>
+					<th>{% trans "Category" %}</th>
+					<th>{% trans "Business Lines" %}</th>
+					<th>{% trans "Status" %}</th>
+					<th>{% trans "Detection" %}</th>
+					<th>{% trans "Actor" %}</th>
+					<th>{% trans "Plan" %}</th>
+					<th>{% trans "Edit" %}</th>
+
+				</tr>
+			</thead>
+		{% for finding in finding_list %}
+		<tr>
+			{% if finding_show_id %}
+				<td>#{{ finding.id|stringformat:"04d" }}</td>
+			{% endif %}
+			<td>{{ finding.date|date:"SHORT_DATE_FORMAT" }}</td>
+			<td><a href="{% url 'findings:details' finding.id %}">{{ finding.subject }}</a></td>
+			<td>{{ finding.category }}</td>
+			<td>{{ finding.get_business_lines_names }}</td>
+			<td>{{ finding.get_status_display }}</td>
+			<td>{{ finding.detection }}</td>
+			<td>{{ finding.actor }}</td>
+			<td>{{ finding.plan }}</td>
+			<td><a href="{% url 'findings:edit' finding.id %}"><span class='glyphicon glyphicon-pencil'></span></a></td>
+		</tr>
+		{% endfor %}
+
+	</table>
+	{% else %}
+	<p>{% trans "No findings found. Lucky you!" %}</p>
+	{% endif %}
+	<a class="btn" href="javascript:history.back()">{% trans "Back" %}</a>
+{% endblock %}

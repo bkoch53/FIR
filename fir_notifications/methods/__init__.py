@@ -23,13 +23,13 @@ class NotificationMethod(object):
     def __init__(self):
         self.server_configured = False
 
-    def enabled(self, event, user, paths):
+    def enabled(self, observation, user, paths):
         """
-        Checks if this method is enabled for an event and its business lines in the user preferences
+        Checks if this method is enabled for an observation and its business lines in the user preferences
         """
         from fir_notifications.models import NotificationPreference
         try:
-            preference = NotificationPreference.objects.get(event=event, method=self.name, user=user)
+            preference = NotificationPreference.objects.get(observation=observation, method=self.name, user=user)
         except NotificationPreference.DoesNotExist:
             return False
         for bl in preference.business_lines.all():
@@ -41,7 +41,7 @@ class NotificationMethod(object):
     def prepare(template_object, instance, extra_context=None):
         """
         Renders a notification template (subject, description, short description) for a given instance
-        which fired an event
+        which fired an observation
         """
         if extra_context is None:
             extra_context = {}
@@ -81,7 +81,7 @@ class NotificationMethod(object):
         except:
             return {}
 
-    def send(self, event, users, instance, paths):
+    def send(self, observation, users, instance, paths):
         raise NotImplementedError
 
     def configured(self, user):

@@ -31,31 +31,31 @@ $(function () {
 		}
 
 		// Make pagination work
-		$('#fir_todos').on('click', 'a.paginate', function(event) {
+		$('#fir_todos').on('click', 'a.paginate', function(observation) {
 			refresh_tasks_dashboard($(this));
-			event.preventDefault();
+			observation.probservationDefault();
 		});
 
 		// Click on 'Add' so that form appears
-		$('#fir_todos_add').click(function (event) {
+		$('#fir_todos_add').click(function (observation) {
 			$('#fir_todos_new').removeClass('hidden');
 			$('#fir_todos_new input:text:first').focus();
 
-			event.preventDefault();
+			observation.probservationDefault();
 		});
 
 		// Click in the action bar to make form appear
-		$('#details-add-todo').click(function (event) {
+		$('#details-add-todo').click(function (observation) {
 			$('#fir_todos').removeClass('hidden');
 			$('#fir_todos_add').click();
 
-			event.preventDefault();
+			observation.probservationDefault();
 		});
 
 		// Custom behavior when comment is added
-		$('#fir_todos_list').on('fir.form.success', '#fir_todos_new', function (event) {
+		$('#fir_todos_list').on('fir.form.success', '#fir_todos_new', function (observation) {
 			$('form#fir_todos_new .select2-container').select2('data', null);
-			event.stopPropagation();
+			observation.stopPropagation();
 		});
 	}
 });

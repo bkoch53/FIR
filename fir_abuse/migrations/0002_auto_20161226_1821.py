@@ -9,7 +9,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('incidents', '0006_merge'),
+        ('findings', '0006_merge'),
         ('fir_artifacts', '0005_delete_artifactwhitelistitem'),
         ('fir_abuse', '0001_initial'),
     ]
@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('cc', models.CharField(max_length=100, null=True)),
                 ('bcc', models.CharField(max_length=100, null=True)),
                 ('type', models.CharField(max_length=100)),
-                ('incident_category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='incidents.IncidentCategory')),
+                ('finding_category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='findings.FindingCategory')),
             ],
         ),
         migrations.CreateModel(
@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
                 ('type', models.CharField(max_length=100)),
                 ('body', models.TextField()),
                 ('subject', models.TextField()),
-                ('incident_category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='incidents.IncidentCategory')),
+                ('finding_category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='findings.FindingCategory')),
             ],
         ),
         migrations.CreateModel(
@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
         ),
         migrations.RemoveField(
             model_name='abuse',
-            name='incident_category',
+            name='finding_category',
         ),
         migrations.DeleteModel(
             name='Abuse',

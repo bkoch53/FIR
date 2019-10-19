@@ -9,7 +9,7 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('incidents', '0001_initial'),
+        ('findings', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 ('end_timestamp', models.DateTimeField(null=True, blank=True)),
                 ('interpretation', models.TextField()),
                 ('found_by', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
-                ('incident', models.ForeignKey(to='incidents.Incident')),
+                ('finding', models.ForeignKey(to='findings.Finding')),
             ],
             options={
             },

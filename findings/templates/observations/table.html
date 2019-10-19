@@ -1,0 +1,117 @@
+{% load i18n %}
+{% load authorization %}
+{% load fir_plugins %}
+{% if finding_list %}
+	<div class='finding_table' data-order-param='{{ order_param }}' data-asc='{{ asc }}'>
+		<table class='table table-hover table-condensed'>
+			<thead>
+            {% trans "Date" as t_date %}
+            {% trans "Category" as t_category %}
+            {% trans "Subject" as t_subject %}
+            {% trans "Severity" as t_severity %}
+            {% trans "Status" as t_status %}
+            {% trans "Detection" as t_detection %}
+            {% trans "Leader" as t_leader %}
+            {% trans "Last Action" as t_lastaction %}
+            {% trans "Plan" as t_plan %}
+            {% trans "Lvl" as t_lvl %}
+            {% trans "IH" as t_ih %}
+            {% trans "None" as t_none %}
+				<tr>
+                    {% if finding_show_id %}<th>ID</th>{% endif %}
+					{% include 'observations/column.html' with name=t_date field='date' %}
+					<th></th>
+					{% include 'observations/column.html' with name=t_category field='category' %}
+					{% include 'observations/column.html' with name=t_subject field='subject' %}
+					<th>{% trans "Business Lines" %}</th>
+					{% include 'observations/column.html' with name=t_severity field='severity' %}
+					{% include 'observations/column.html' with name=t_status field='status' %}
+					{% if finding_view %}
+						{% include 'observations/column.html' with name=t_detection field='detection' %}
+						{% include 'observations/column.html' with name=t_leader field='actor' %}
+						{% include 'observations/column.html' with name=t_lastaction field='last_action' %}
+						{% include 'observations/column.html' with name=t_plan field='plan' %}
+						{% include 'observations/column.html' with name=t_lvl field='confidentiality' %}
+					{% endif %}
+					{% include 'observations/column.html' with name=t_ih field='opened_by' %}
+					<th>{%  trans "Edit" %}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for finding in finding_list %}
+					{%  has_perm 'findings.handle_findings' obj=finding as can_handle_finding %}
+					<tr class='{{ finding.status }}'>
+						{% if finding_show_id %}<td>{{ finding|object_id }}</td>{% endif %}
+						<td class='finding_date_column'>{{ finding.date|date:'Y-m-d' }}</td>
+						<td>
+							{% if can_handle_finding %}<a href="{% url 'ajax:toggle_star' finding.id %}" class='star'>{%endif%}
+									{% if finding.is_starred %}
+										<i class='glyphicon glyphicon-star star'></i>
+									{% else %}
+										<i class='glyphicon glyphicon-star-empty star'></i>
+									{% endif %}
+							{% if can_handle_finding %}</a>{%endif%}
+						</td>
+						<td>{{ finding.category }}</td>
+						{% if finding.is_finding %}
+							<td><a href="{% url 'findings:details' finding.id %}">{{ finding.subject }}</a></td>
+						{% else %}
+							<td><a href="{% url 'observations:details' finding.id %}">{{ finding.subject }}</a></td>
+						{% endif %}
+						<td>{{ finding.get_business_lines_names }}</td>
+						<td><span class='badge threatcon-{{ finding.severity }}'>{{ finding.severity }}</span></td>
+						<td>{{ finding.get_status_display }}</td>
+
+						{% if finding_view %}
+							<td>{{ finding.detection }}</td>
+							<td>{{ finding.actor }}</td>
+							<td>
+								{% if finding.comments_set.count > 0%}
+									{{ finding.get_last_comment.action }}
+									<small class='relative-date'>
+										({{ finding.get_last_comment.date|date:'Y-m-d G:i' }})
+									</small>
+								{% else %}
+									{{ t_none }}
+								{%endif%}
+							</td>
+							<td>{{ finding.plan|default:t_none }}</td>
+							<td>{{ finding.get_confidentiality_display }}</td>
+						{% endif %}
+
+						<td>{{ finding.opened_by }}</td>
+						<td>
+                            {% if can_handle_finding %}
+							<a href="{% url 'findings:edit' finding.id %}"><span class='glyphicon glyphicon-pencil'></span></a>
+                            {% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		{% if finding_list.paginator %}
+			<div>
+			    <span class="step-links">
+			        {% if finding_list.has_previous %}
+			        	<a href='#' class='paginate' data-page='{{ finding_list.previous_page_number }}'>
+							<i class='glyphicon glyphicon-backward'></i> {% trans "previous" %}
+			        	</a>
+			        {% endif %}
+
+			        <span class="current">
+			            {% blocktrans with number=finding_list.number num_pages=finding_list.paginator.num_pages %}(page {{ number }} of {{ num_pages }}){% endblocktrans %}
+			        </span>
+
+			        {% if finding_list.has_next %}
+			        	<a href='#' class='paginate' data-page='{{ finding_list.next_page_number }}'>
+							{% trans "next" %} <i class='glyphicon glyphicon-forward'></i>
+			        	</a>
+			        {% endif %}
+			    </span>
+			</div>
+		{% endif %}
+	</div>
+{% else %}
+	<div class='nothing_to_show'>{% trans "No findings to show." %}</div>
+{% endif %}

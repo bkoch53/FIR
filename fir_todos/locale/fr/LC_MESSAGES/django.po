@@ -22,7 +22,7 @@ msgid "Task"
 msgstr "Tâche"
 
 #: templates/fir_todos/dashboard.html:8
-msgid "Incident"
+msgid "Finding"
 msgstr ""
 
 #: templates/fir_todos/dashboard.html:9

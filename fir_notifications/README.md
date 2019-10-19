@@ -31,29 +31,29 @@ You should configure fir_celery (broker and result backend).
 Users can subscribe to notifications via their profile page.
 
 Core FIR notifications:
-* 'event:created': new event
-* 'event:updated': update of an event
-* 'incident:created': new incident
-* 'incident:updated': update of an incident
-* 'event:commented': new comment added to an event
-* 'incident:commented': new comment added to an incident
-* 'event:status_changed': event status changed
-* 'incident:status_changed': incident status changed
+* 'observation:created': new observation
+* 'observation:updated': update of an observation
+* 'finding:created': new finding
+* 'finding:updated': update of an finding
+* 'observation:commented': new comment added to an observation
+* 'finding:commented': new comment added to an finding
+* 'observation:status_changed': observation status changed
+* 'finding:status_changed': finding status changed
 
 ## Configuration
 
-### Events
+### Observations
 
-You can disable notification events in the settings using the key `NOTIFICATIONS_DISABLED_EVENTS`:
+You can disable notification observations in the settings using the key `NOTIFICATIONS_DISABLED_EVENTS`:
 
 ```python
-NOTIFICATIONS_DISABLED_EVENTS = ('event:created', 'incident:created')
+NOTIFICATIONS_DISABLED_EVENTS = ('observation:created', 'finding:created')
 ```
 
-If you don't want to send different notification events for Incidents and Events, you  should enable this setting:
+If you don't want to send different notification observations for Findings and Observations, you  should enable this setting:
 
 ```python
-# Send 'incident:*' notification events for both Event and Incident if True
+# Send 'finding:*' notification observations for both Observation and Finding if True
 NOTIFICATIONS_MERGE_INCIDENTS_AND_EVENTS = True
 ```
 
@@ -90,14 +90,14 @@ NOTIFICATIONS_XMPP_PORT = 5222
 
 ### Notification templates
 
-You have to create at least onenotification template per notification event in the Django admin site.
+You have to create at least onenotification template per notification observation in the Django admin site.
 
 To render notifications, each notification method can use the fields `subject`, `description` or `short_description`:
 
 - Email uses `subject` and `description`.
 - XMPP uses `subject` and `short_description`.
 
-These fields will accept Markdown formatted text and Django template language markups. The Django template context will contain an `instance`object, the instance of the object that fired the notification event.
+These fields will accept Markdown formatted text and Django template language markups. The Django template context will contain an `instance`object, the instance of the object that fired the notification observation.
 
 The Email `description` will generate a multipart message: a plain text part in Markdown and a HTML part rendered from this Markdown. The XMPP `short_description` will be rendered as HTML from Markdown.
 
@@ -112,9 +112,9 @@ You have to create a subclass of `NotificationMethod` from `fir_notifications.me
 
 If your configuration method needs some additional user defined settings, you have to list them in the class property `options`. See `EmailMethod` and `XmppMethod` for details. 
 
-### Adding notification event
+### Adding notification observation
 
-Use the `@notification_event` decorator defined in `fir_notifications.decorators` to decorate a classic Django signal handler function. This handler must return a tuple with an instance of the notification model and a queryset of the concerned business lines.
+Use the `@notification_observation` decorator defined in `fir_notifications.decorators` to decorate a classic Django signal handler function. This handler must return a tuple with an instance of the notification model and a queryset of the concerned business lines.
 
 
 

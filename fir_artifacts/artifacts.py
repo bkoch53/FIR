@@ -26,8 +26,8 @@ def find(data):
     return result
 
 
-def after_save(type, value, event):
-    return INSTALLED_ARTIFACTS[type].after_save(value, event)
+def after_save(type, value, observation):
+    return INSTALLED_ARTIFACTS[type].after_save(value, observation)
 
 def incs_for_art(art_string):
     from fir_artifacts.models import Artifact
@@ -72,11 +72,11 @@ class AbstractArtifact:
         return results
 
     @classmethod
-    def after_save(cls, value, event):
+    def after_save(cls, value, observation):
         # Do nothing, allows for specific callback in subclasses
         pass
 
-    def __init__(self, artifacts, event, user=None):
+    def __init__(self, artifacts, observation, user=None):
         class ArtifactDisplay(object):
             def __init__(self, artifact, user):
                 self.artifact = artifact
@@ -99,7 +99,7 @@ class AbstractArtifact:
                 return self.artifact.pk
 
         self._artifacts = [ArtifactDisplay(artifact, user) for artifact in artifacts]
-        self._event = event
+        self._observation = observation
 
         self._correlated = []
         for artifact in self._artifacts:
@@ -118,7 +118,7 @@ class AbstractArtifact:
         else:
             context['artifact_values'] = self._artifacts
 
-        context['event'] = self._event
+        context['observation'] = self._observation
 
         if not json:
             return template.render(context.flatten(), request)

@@ -44,14 +44,14 @@
       inlineattach = new inlineAttachment(options, editor),
       el = codeMirror.getWrapperElement();
 
-    el.addEventListener('paste', function(e) {
+    el.addObservationListener('paste', function(e) {
       inlineattach.onPaste(e);
     }, false);
 
-    codeMirror.setOption('onDragEvent', function(data, e) {
+    codeMirror.setOption('onDragObservation', function(data, e) {
       if (e.type === "drop") {
         e.stopPropagation();
-        e.preventDefault();
+        e.probservationDefault();
         return inlineattach.onDrop(e);
       }
     });
@@ -71,14 +71,14 @@
       inlineattach = new inlineAttachment(options, editor),
       el = codeMirror.getWrapperElement();
 
-    el.addEventListener('paste', function(e) {
+    el.addObservationListener('paste', function(e) {
       inlineattach.onPaste(e);
     }, false);
 
     codeMirror.on('drop', function(data, e) {
       if (inlineattach.onDrop(e)) {
         e.stopPropagation();
-        e.preventDefault();
+        e.probservationDefault();
         return true;
       } else {
         return false;

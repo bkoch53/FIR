@@ -4,7 +4,7 @@ Follow the generic plugin installation instructions in [the FIR wiki](https://gi
 
 ## Usage
 
-The `fir_relations` plugin allows you to links incidents and events. The plugin parses incident descriptions and comments for incident references.
+The `fir_relations` plugin allows you to links findings and observations. The plugin parses finding descriptions and comments for finding references.
 
 ## Development
 

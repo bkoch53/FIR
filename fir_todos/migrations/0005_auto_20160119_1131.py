@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='todolisttemplate',
             name='concerned_business_lines',
-            field=models.ManyToManyField(blank=True, to='incidents.BusinessLine'),
+            field=models.ManyToManyField(blank=True, to='findings.BusinessLine'),
         ),
         migrations.AlterField(
             model_name='todolisttemplate',

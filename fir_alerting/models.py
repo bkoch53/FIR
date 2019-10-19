@@ -1,7 +1,7 @@
 from django.db import models
 from django import forms
 
-from incidents.models import IncidentCategory, BusinessLine
+from findings.models import FindingCategory, BusinessLine
 
 
 class RecipientTemplate(models.Model):
@@ -17,7 +17,7 @@ class RecipientTemplate(models.Model):
         return self.name
 
     class Meta:
-        db_table = 'incidents_recipienttemplate'
+        db_table = 'findings_recipienttemplate'
 
 
 class CategoryTemplate(models.Model):
@@ -25,13 +25,13 @@ class CategoryTemplate(models.Model):
     type = models.CharField(max_length=100)
     body = models.TextField(help_text="This is a Markdown field. You can use django templating language.")
     subject = models.TextField()
-    incident_category = models.ForeignKey(IncidentCategory)
+    finding_category = models.ForeignKey(FindingCategory)
 
     def __unicode__(self):
         return self.name
 
     class Meta:
-        db_table = 'incidents_categorytemplate'
+        db_table = 'findings_categorytemplate'
 
 
 class EmailForm(forms.Form):

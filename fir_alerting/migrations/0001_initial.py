@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('incidents', '0003_auto_20160119_1021'),
+        ('findings', '0003_auto_20160119_1021'),
     ]
 
     operations = [
@@ -23,10 +23,10 @@ class Migration(migrations.Migration):
                 ('type', models.CharField(max_length=100)),
                 ('body', models.TextField()),
                 ('subject', models.TextField()),
-                ('incident_category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='incidents.IncidentCategory')),
+                ('finding_category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='findings.FindingCategory')),
             ],
             options={
-                'db_table': 'incidents_categorytemplate',
+                'db_table': 'findings_categorytemplate',
             },
         ),
         migrations.CreateModel(
@@ -39,10 +39,10 @@ class Migration(migrations.Migration):
                 ('recipient_to', models.TextField()),
                 ('recipient_cc', models.TextField()),
                 ('recipient_bcc', models.TextField(blank=True, null=True)),
-                ('business_line', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='incidents.BusinessLine')),
+                ('business_line', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='findings.BusinessLine')),
             ],
             options={
-                'db_table': 'incidents_recipienttemplate',
+                'db_table': 'findings_recipienttemplate',
             },
         ),
     ]

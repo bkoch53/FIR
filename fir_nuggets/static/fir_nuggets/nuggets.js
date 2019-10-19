@@ -45,22 +45,22 @@ function getCookie(name) {
 $(function() {
 
 	$('#tab_nuggets').on('click', '.delete-nugget', function(e) {
-		e.preventDefault();
+		e.probservationDefault();
 		ajax_action($(this), delete_nugget);
 	});
 
 	$('#tab_nuggets').on('click', '.edit-nugget', function(e) {
-		e.preventDefault();
+		e.probservationDefault();
 		ajax_action($(this), edit_nugget);
 	});
 
 	$('#add-nugget').on('click', function(e) {
-		e.preventDefault();
+		e.probservationDefault();
 		ajax_action($(this), edit_nugget);
 	});
 
 	$('#nugget_modals').on('click', '#submit-nugget', function(e) {
-		e.preventDefault();
+		e.probservationDefault();
 		submit_nugget();
 	});
 })

@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('incidents', '0001_initial'),
+        ('findings', '0001_initial'),
     ]
 
     operations = [
@@ -19,9 +19,9 @@ class Migration(migrations.Migration):
                 ('done', models.BooleanField(default=False)),
                 ('done_time', models.DateTimeField(null=True, blank=True)),
                 ('deadline', models.DateField(null=True, blank=True)),
-                ('business_line', models.ForeignKey(to='incidents.BusinessLine')),
-                ('category', models.ForeignKey(to='incidents.IncidentCategory')),
-                ('incident', models.ForeignKey(to='incidents.Incident')),
+                ('business_line', models.ForeignKey(to='findings.BusinessLine')),
+                ('category', models.ForeignKey(to='findings.FindingCategory')),
+                ('finding', models.ForeignKey(to='findings.Finding')),
             ],
             options={
             },

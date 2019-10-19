@@ -6,9 +6,9 @@ import re
 
 class Command(BaseCommand):
     models = {
-        'incidents': {
-            'Incident': ['description', ],
-            'IncidentTemplate': ['description', ],
+        'findings': {
+            'Finding': ['description', ],
+            'FindingTemplate': ['description', ],
             'Comments': ['comment', ]
         },
         'fir_alerting': {

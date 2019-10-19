@@ -12,9 +12,9 @@
 				{{ a.value }}
 				</a>
 				{% if a.correlation_count > 1 %} ({{ a.correlation_count }}) {% endif %}
-                {%  has_perm 'incidents.handle_incidents' obj=event as can_handle_incident %}
-                {% if can_handle_incident %}
-				<form class='icon' action="{% url 'artifacts:detach' a.id event|relation_name event.id %}" method='POST'>
+                {%  has_perm 'findings.handle_findings' obj=observation as can_handle_finding %}
+                {% if can_handle_finding %}
+				<form class='icon' action="{% url 'artifacts:detach' a.id observation|relation_name observation.id %}" method='POST'>
 					{% csrf_token %}
 					<button type="submit" class='btn btn-xs btn-link icon'>
 						<i class='glyphicon glyphicon-remove'></i>

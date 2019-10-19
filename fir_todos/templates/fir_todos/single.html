@@ -1,9 +1,9 @@
 {% load authorization %}
-{%  has_perm 'incidents.handle_incidents' obj=item.incident as can_handle_incident %}
-{%  has_perm 'incidents.view_incidents' obj=item.business_line as can_view_incident %}
+{%  has_perm 'findings.handle_findings' obj=item.finding as can_handle_finding %}
+{%  has_perm 'findings.view_findings' obj=item.business_line as can_view_finding %}
 <tr id="todo-{{item.id}}" class="fir_todo_item {% if item.done %} fir_todos_done {% endif %}">
 	<td class='fir_todos_status'>
-			{% if can_view_incident or can_handle_incident %}
+			{% if can_view_finding or can_handle_finding %}
 				<form action="{% url 'todos:toggle_status' item.id %}" method='POST' data-ajaxform data-action='replaceWith' data-target='#todo-{{item.id}}'>
 				{% csrf_token %}
 				<button type='submit' class='btn btn-xs btn-link icon'>
@@ -24,12 +24,12 @@
 	</td>
 	<td class='fir_todos_description'>{{ item.description }}</td>
 	{% if dashboard %}
-		<td class='fir_todos_incident'><a href="{% url 'incidents:details' item.incident_id %}">{{ item.incident.subject }}</a></td>
+		<td class='fir_todos_finding'><a href="{% url 'findings:details' item.finding_id %}">{{ item.finding.subject }}</a></td>
 		<td class='fir_todos_category'>{{ item.category.name }}</td>
 	{% endif %}
 		<td class='fir_todos_bl'>{{ item.business_line.name }}</td>
 		<td class='fir_todos_delete'>
-	{% if can_handle_incident %}
+	{% if can_handle_finding %}
 		<form action="{% url 'todos:delete' item.id %}" method='POST' data-ajaxform data-action='remove' data-target='#todo-{{item.id}}' data-hideifnone='#fir_todos' data-hideifnone-selector='.fir_todo_item'>
 			{% csrf_token %}
 			<button type='submit' class='btn btn-xs btn-link icon'><i class='glyphicon glyphicon-trash'></i></button>

@@ -10,7 +10,7 @@ from fir_notifications.forms import NotificationTemplateForm
 class NotificationTemplateAdmin(MarkdownModelAdmin):
     markdown_fields = ('description', 'short_description')
     form = NotificationTemplateForm
-    list_display = ('event', 'business_lines_list')
+    list_display = ('observation', 'business_lines_list')
 
     def business_lines_list(self, obj):
         bls = obj.business_lines.all()

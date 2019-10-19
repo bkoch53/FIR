@@ -30,7 +30,7 @@ def method_configuration(request, method):
 @login_required
 def subscriptions(request):
     instances = NotificationPreference.objects.filter(user=request.user,
-                                                      event__in=registry.events.keys(),
+                                                      observation__in=registry.observations.keys(),
                                                       method__in=registry.methods.keys(),
                                                       business_lines__isnull=False).distinct()
     return render(request, "fir_notifications/subscriptions.html", {'preferences': instances})

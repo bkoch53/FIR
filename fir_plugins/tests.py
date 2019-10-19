@@ -13,7 +13,7 @@ class FileHolder(OneLinkableModel):
     name = models.CharField(max_length=100)
 
 
-class Incident(models.Model):
+class Finding(models.Model):
     name = models.CharField(max_length=100)
 
 
@@ -29,14 +29,14 @@ class Artifact(ManyLinkableModel):
 class Article(models.Model):
     name = models.CharField(max_length=100)
 
-Artifact.link_to(Incident)
+Artifact.link_to(Finding)
 
 
 class ManyLinkableModelTest(TestCase):
     def setUp(self):
         self.article1 = Article.objects.create(name="article1")
         self.article2 = Article.objects.create(name="article2")
-        self.incident1 = Incident.objects.create(name="incident1")
+        self.finding1 = Finding.objects.create(name="finding1")
 
     def test_article_artifact(self):
         article_artifact = Artifact.objects.create(name="article artifact 1")
@@ -47,23 +47,23 @@ class ManyLinkableModelTest(TestCase):
     def test_multi_artifact(self):
         article_artifact = Artifact.objects.create(name="article artifact 2")
         article_artifact.relations.add(self.article1)
-        article_artifact.relations.add(self.incident1)
+        article_artifact.relations.add(self.finding1)
         self.assertEqual(article_artifact.relations.count(), 2)
         self.assertEqual(len(article_artifact.relations.all()), 2)
-        self.assertEqual(len(article_artifact.relations.all(linked_type=Incident)), 1)
+        self.assertEqual(len(article_artifact.relations.all(linked_type=Finding)), 1)
         self.assertEqual(len(article_artifact.relations.all(linked_type=[Article,])), 1)
-        self.assertEqual(len(article_artifact.relations.all([Incident, Article])), 2)
-        self.assertEqual(article_artifact.relations.all(linked_type=Incident)[0].name, self.incident1.name)
+        self.assertEqual(len(article_artifact.relations.all([Finding, Article])), 2)
+        self.assertEqual(article_artifact.relations.all(linked_type=Finding)[0].name, self.finding1.name)
 
     def test_generic_artifact(self):
         artifact = Artifact.objects.create(name="generic artifact")
-        artifact.relations.add(self.incident1)
+        artifact.relations.add(self.finding1)
         artifact.relations.add(self.article1)
         self.assertEqual(len(artifact.relations.all()), 2)
-        self.assertEqual(len(artifact.relations.all(linked_type=Incident)), 1)
+        self.assertEqual(len(artifact.relations.all(linked_type=Finding)), 1)
         self.assertEqual(len(artifact.relations.all(linked_type=[Article,])), 1)
-        self.assertEqual(len(artifact.relations.all([Incident, Article])), 2)
-        self.assertEqual(artifact.relations.all(linked_type=Incident)[0].name, self.incident1.name)
+        self.assertEqual(len(artifact.relations.all([Finding, Article])), 2)
+        self.assertEqual(artifact.relations.all(linked_type=Finding)[0].name, self.finding1.name)
 
     def test_not_related(self):
         artifact = Artifact.objects.create(name="generic artifact 2")
@@ -75,7 +75,7 @@ class ManyLinkableModelTest(TestCase):
         artifact = Artifact.objects.create(name="generic artifact 3")
         artifact.relations.add(self.article1)
         artifact.relations.add(self.article2)
-        artifact.relations.add(self.incident1)
+        artifact.relations.add(self.finding1)
         self.assertEqual(len(artifact.relations.all()), 3)
         self.assertEqual(len(artifact.relations.all(linked_type=[Article, ])), 2)
         artifact.relations.remove(self.article2)
@@ -89,7 +89,7 @@ class ManyLinkableModelTest(TestCase):
         artifact = Artifact.objects.create(name="generic artifact 4")
         artifact.relations.add(self.article1)
         artifact.relations.add(self.article2)
-        artifact.relations.add(self.incident1)
+        artifact.relations.add(self.finding1)
         result = artifact.relations.filter(name="article1")
         self.assertEqual(len(result), 1)
         result = artifact.relations.filter(name__endswith="1")
@@ -99,18 +99,18 @@ class ManyLinkableModelTest(TestCase):
         artifact = Artifact.objects.create(name="generic artifact 5")
         artifact.relations.add(self.article1)
         artifact.relations.add(self.article2)
-        incidents_qs = artifact.incidents.all()
+        findings_qs = artifact.findings.all()
         articles_qs = artifact.articles.all()
-        self.assertEqual(incidents_qs.count(), 0)
+        self.assertEqual(findings_qs.count(), 0)
         self.assertEqual(articles_qs.count(), 2)
 
     def test_related_qs(self):
         artifact = Artifact.objects.create(name="generic artifact 6")
         artifact.relations.add(self.article1)
         artifact.relations.add(self.article2)
-        incidents_qs = artifact.incidents.all()
+        findings_qs = artifact.findings.all()
         articles_qs = artifact.articles.all()
-        self.assertEqual(incidents_qs.count(), 0)
+        self.assertEqual(findings_qs.count(), 0)
         self.assertEqual(articles_qs.count(), 2)
 
     def test_annotation(self):
@@ -123,12 +123,12 @@ class ManyLinkableModelTest(TestCase):
 
     def test_create(self):
         artifact = Artifact.objects.create(name="generic artifact 6")
-        artifact.relations.create(linked_type=Incident, name="Incident directly created")
+        artifact.relations.create(linked_type=Finding, name="Finding directly created")
         self.assertEqual(artifact.relations.count(), 1)
-        self.assertEqual(artifact.incidents.count(), 1)
-        self.assertEqual(artifact.relations.all()[0].name, "Incident directly created")
+        self.assertEqual(artifact.findings.count(), 1)
+        self.assertEqual(artifact.relations.all()[0].name, "Finding directly created")
         with self.assertRaises(AssertionError):
-            artifact.relations.create(name="Incident directly created (should fail)")
+            artifact.relations.create(name="Finding directly created (should fail)")
         with self.assertRaises(artifact.LinkedModelDoesNotExist):
             artifact.relations.create(linked_type=NotRelatedModel, name="Misc model directly created (should fail)")
 

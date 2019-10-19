@@ -5,7 +5,7 @@ from django.db import models
 from django import forms
 from django.contrib.auth.models import User
 
-from incidents.models import Incident
+from findings.models import Finding
 
 
 class Nugget(models.Model):
@@ -17,21 +17,21 @@ class Nugget(models.Model):
     end_timestamp = models.DateTimeField(blank=True, null=True)
     interpretation = models.TextField()
 
-    incident = models.ForeignKey(Incident)
+    finding = models.ForeignKey(Finding)
     found_by = models.ForeignKey(User)
 
     def __unicode__(self):
-        return u"Nugget: {} in {} ({})".format(self.source, self.incident, self.interpretation)
+        return u"Nugget: {} in {} ({})".format(self.source, self.finding, self.interpretation)
 
 
 class NuggetForm(forms.ModelForm):
 
     class Meta:
         model = Nugget
-        exclude = ('incident', 'found_by')
+        exclude = ('finding', 'found_by')
         widgets = {
             'source': forms.TextInput(attrs={'placeholder': 'NTUSER, $MFT, %APPDATA%, RAM, etc...'}),
             'interpretation': forms.Textarea(attrs={'cols': 100, 'rows': 5, 'placeholder': 'What the raw data means to the case.'}),
             'raw_data': forms.Textarea(attrs={'placeholder': 'Raw data: log lines, directory listings, registry keys...'}),
-            'end_timestamp': forms.TextInput(attrs={'placeholder': 'Leave blank if atomic event'}),
+            'end_timestamp': forms.TextInput(attrs={'placeholder': 'Leave blank if atomic observation'}),
         }

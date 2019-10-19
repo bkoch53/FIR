@@ -9,7 +9,7 @@ from fir_api import views
 router = routers.DefaultRouter(trailing_slash=False)
 
 router.register(r'users', views.UserViewSet)
-router.register(r'incidents', views.IncidentViewSet)
+router.register(r'findings', views.FindingViewSet)
 router.register(r'artifacts', views.ArtifactViewSet)
 router.register(r'files', views.FileViewSet)
 

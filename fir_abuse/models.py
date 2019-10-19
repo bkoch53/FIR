@@ -1,7 +1,7 @@
 from django.db import models
 from django import forms
 
-from incidents.models import IncidentCategory
+from findings.models import FindingCategory
 
 
 class AbuseTemplate(models.Model):
@@ -9,7 +9,7 @@ class AbuseTemplate(models.Model):
     type = models.CharField(max_length=100, blank=True)
     body = models.TextField()
     subject = models.TextField()
-    incident_category = models.ForeignKey(IncidentCategory, blank=True, null=True)
+    finding_category = models.ForeignKey(FindingCategory, blank=True, null=True)
 
     def __unicode__(self):
         return self.name
@@ -20,7 +20,7 @@ class AbuseContact(models.Model):
     to = models.CharField(max_length=100)
     cc = models.CharField(max_length=100, blank=True)
     bcc = models.CharField(max_length=100, blank=True)
-    incident_category = models.ForeignKey(IncidentCategory, blank=True, null=True)
+    finding_category = models.ForeignKey(FindingCategory, blank=True, null=True)
     type = models.CharField(max_length=100, blank=True)
 
     def __unicode__(self):

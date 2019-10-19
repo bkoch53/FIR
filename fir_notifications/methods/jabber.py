@@ -58,13 +58,13 @@ class XmppMethod(NotificationMethod):
             return False
         return self.client.reconnectAndReauth()
 
-    def send(self, event, users, instance, paths):
+    def send(self, observation, users, instance, paths):
         if not self._ensure_connection():
             print("Cannot contact the XMPP server")
             return
         for user, templates in users.items():
             jid = self._get_jid(user)
-            if not self.enabled(event, user, paths) or jid is None:
+            if not self.enabled(observation, user, paths) or jid is None:
                 continue
             template = self._get_template(templates)
             if template is None:

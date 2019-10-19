@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load fir_plugins %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block header %}
+<h4 class='search-results'>
+	<i class='glyphicon glyphicon-search'></i>{% trans "Search results for:" %} <em>{{query_string}}</em>
+</h4>
+{% endblock %}
+
+{% block custom_js %}
+<script src="{% static "custom_js/finding_display.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+	<div id='all_findings' class='finding_display' data-url="{% url 'search' %}" data-query='{{ query_string }}'>
+		{% trans "Loading ..." %}
+	</div>
+{% endblock %}

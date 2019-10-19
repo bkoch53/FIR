@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% load fir_plugins %}
+{% load fir_artifacts %}
+{% load i18n %}
+{% load staticfiles %}
+{% load authorization %}
+{% load markdown %}
+
+{% block custom_css %}
+{% endblock %}
+
+{% block custom_js %}
+{% rich_edit_static %}
+<script type="text/javascript" src="{% static "custom_js/hotkeys.js" %}"></script>
+{% plugin_point 'details_static' %}
+
+<script src="{% static "custom_js/details_actions.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+    {%  has_perm 'findings.handle_findings' obj=observation as can_handle_finding %}
+    {% can_comment observation as can_comment_finding %}
+	<div id='details-actions-all'>
+	<div class="details-actions-supmenu" id="details-actions-add">
+		<ul class="list-unstyled">
+			<li><a href="#" id="details-add-file"><i class="glyphicon glyphicon-file"></i>{%  trans "File" %}</a></li>
+			{% if valid_attributes|length > 0 %}
+				<li><a href="#" id="details-add-attribute"><i class="glyphicon glyphicon-list"></i>{%  trans "Attribute" %}</a></li>
+			{% endif %}
+			{% plugin_point 'details_actions_add' %}
+		</ul>
+	</div>
+
+	{% plugin_point 'details_actions_menu' %}
+
+	<div id="details-actions">
+		<ul class="list-unstyled">
+            {% if can_handle_finding %}
+			<li><a href="#" id="details-actions-add-link"><i class="glyphicon glyphicon-plus"></i>{%  trans "Add" %}</a></li>
+            {% endif %}
+            {% if can_comment_finding %}
+			<li><a href="#" id='details-actions-comment' data-target='#addComment'>
+				<i class="glyphicon glyphicon-comment"></i>{%  trans "Comment" context "verb" %}
+			</a></li>
+            {% endif %}
+            {% if can_handle_finding %}
+			<li><a href="{% url 'findings:edit' observation.id %}"><i class="glyphicon glyphicon-pencil"></i>{%  trans "Edit" %}</a></li>
+			{% if observation.status != 'O' %}
+				<li>
+					<form action="{% url 'findings:change_status' observation.id 'O' %}" method='POST' class='icon'>
+						{% csrf_token %}
+						<a href='#' class='submit'><i class="glyphicon glyphicon-fire"></i>{% trans "Open" %}</a>
+					</form>
+				</li>
+			{% endif %}
+			{% if observation.status != 'B' %}
+				<li>
+					<form action="{% url 'findings:change_status' observation.id 'B' %}" method='POST' class='icon'>
+						{% csrf_token %}
+						<a href="#" class='submit'><i class="glyphicon glyphicon-ban-circle"></i>{%  trans "Block" %}</a>
+					</form>
+				</li>
+			{% endif %}
+			{% if observation.status != 'C' %}
+				<li>
+					<form action="{% url 'findings:change_status' observation.id 'C' %}" method='POST' class='icon'>
+						{% csrf_token %}
+						<a href='#' class='submit'><i class="glyphicon glyphicon-ok-sign"></i>{% trans "Close" %}</a>
+					</form>
+				</li>
+			{% endif %}
+            {% endif %}
+			<li><a href="{% url 'findings:followup' observation.id %}"><i class="glyphicon glyphicon-retweet"></i>{%  trans "Finding followup" %}</a></li>
+			{% plugin_point 'details_actions' %}
+		</ul>
+	</div>
+	</div>
+
+	<div id="details-container" data-observation-id="{{ observation.id }}">
+		<div class="row hidden-xs" id="finding-properties">
+			<table class='minitable table'>
+				<tr class='slim'>
+					{% if observation.is_finding %}
+						<td class='head'>{%  trans "Finding Leader" %}</td><td class='delim'>{{ observation.actor }}</td>
+						<td class='head'>{%  trans "Plan" %}</td><td class='delim'>{{ observation.plan }}</td>
+					{% endif %}
+					<td class='head'>{%  trans "Severity" %}</td><td class='delim'>{{ observation.severity }}</td>
+					<td class='head'>{%  trans "Category" %}</td><td class='delim'>{{ observation.category }}</td>
+					<td class='head'>{%  trans "Status" %}</td><td class='delim'>
+						<span id='observation-status' class='label
+							{% if observation.status == "O" %}label-info
+							{% elif observation.status == "B" %}label-danger
+							{% elif observation.status == "C"%}label-success{% endif %}
+						'>
+							{{ observation.get_status_display}}
+						</span>
+					</td>
+					<td class='head'>{%  trans "Detection" %}</td><td class='delim'>{{ observation.detection }}</td>
+					<td class='head'>{%  trans "B/L" %}</td><td>{{ observation.get_business_lines_names }}</td>
+				</tr>
+			</table>
+		</div>
+
+		<h1>{% if observation.is_finding %}{%  trans "Finding" %}{% else %}{%  trans "Observation" %}{% endif %}{% if finding_show_id %} {{ observation|object_id }}{% endif %} / {{observation.category}} / {{observation.subject}}</h1>
+		<div class="row">
+			<div class="col-sm-7 col-xs-12">
+                {% trans "someone" as someone %}
+				<p><i>{% blocktrans with date=observation.date opened_by=observation.opened_by|default:someone %}Opened on {{ date }} by {{ opened_by }}{% endblocktrans %}</i></p>
+
+				<div class='widget' id='description'>
+					<h4 class='widget'>{%  trans "Description" %}</h4>
+					<p>{{ observation.description|markdown }}</p>
+				</div>
+
+				{% plugin_point 'details_main' %}
+			</div>
+
+			<div class="col-sm-5 col-xs-12" id="finding-sidebar">
+
+				{% if valid_attributes|length > 0 %}
+					<div class='widget {% if attributes.count == 0 %}hidden{% endif %}' id='attributes'>
+						<h4 class='widget'>{%  trans "Attributes" %}</h4>
+
+						<table class='table table-condensed'>
+							<thead>
+								<tr>
+									<th>{%  trans "Name" %}</th>
+									<th>{%  trans "Value" %}</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody id='attribute_list'>
+								{% include 'observations/_attributes.html' %}
+							</tbody>
+                            {% if can_handle_finding %}
+							<form id="add-attribute-form" action="{% url 'findings:add_attribute' observation.id %}" method="post" data-ajaxform data-action='html' data-target='#attribute_list' data-hide='#attribute_form' data-show='#show_attribute_form'>
+							<tr id="show_attribute_form">
+								<td colspan='3'><a href='#'>+ {%  trans "Add attribute" %}</a></td>
+							</tr>
+							<tr id="attribute_form" class='hidden'>
+							<td class="head">{% csrf_token %}
+								<select name="name">
+									{% for valid_attribute in valid_attributes %}
+									<option value="{{valid_attribute.name}}" data-unit="{{valid_attribute.unit}}">{{valid_attribute.name}}</option>
+									{% endfor %}
+								</select>
+							</td>
+							<td><input type="text" id="attribute-value" name="value" placeholder="value" /></td>
+							<td><button type="submit" class="btn btn-xs btn-link">{%  trans "Add" %}</button></td>
+							</tr>
+							</form>
+                            {% endif %}
+						</table>
+					</div>
+				{% endif %}
+				{% plugin_point 'details_sidebar' %}
+			</div>
+		</div>
+
+		<div id='main_tabs' class='tabbable'>
+			<ul class='nav nav-tabs'>
+				<li class='active'>
+					<a href='#tab_comments' data-toggle='tab'>
+						{% trans "Comments" %} (<span id='comment-count'>{{ comments.count }}</span>)
+					</a>
+				</li>
+				{% plugin_point 'details_tab' %}
+			</ul>
+		</div>
+
+		<div class='tab-content tabs table-responsive'>
+			<div class='tab-pane active' id='tab_comments'>
+				<table class="table table-hover table-condensed">
+					<thead>
+						<tr>
+							<th><i class='glyphicon glyphicon-calendar'></i></th>
+							<th><i class='glyphicon glyphicon-user'></i></th>
+							<th>{%  trans "Comment" context "noun" %}</th>
+							<th>{%  trans "Action" %}</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					{% for comment in comments.all reversed %}
+						{% include 'observations/_comment.html' with can_handle_finding=can_handle_finding %}
+					{% endfor %}
+				</table>
+			</div>
+			{% plugin_point 'details_tab_content' %}
+		</div>
+		<!-- Modal for comments -->
+		<div id="addComment" class="modal" tabindex="-1" role="dialog" aria-labelledby="addCommentLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<form id="comment_form" method="POST" data-ajaxform data-target='#tab_comments tbody' data-action='prepend' data-new-comment-url="{% url 'findings:comment' observation.id %}">
+					 	<div class="modal-header">
+					    	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 id="addCommentLabel" class="modal-title">{% trans "Add comment" %}</h4>
+					  	</div>
+					  	<div class="modal-body">
+							<div>
+								{% csrf_token %}
+								<div class="form-group row">
+									<div class="col-sm-1">
+										<label for="id_action">{%  trans "Action" %}</label>
+									</div>
+									<div class="col-sm-4">
+										{{ comment_form.action }}
+										<span class='help-block'>
+											{% for error in comment_form.action.errors %}
+												{{error}}
+											{% endfor %}
+										</span>
+									</div>
+									<div class="col-sm-1">
+										<label for="id_action">{%  trans "Date" %}</label>
+									</div>
+									<div class="col-sm-3">
+										<input type="text" id="id_date" name="date" class="datetime" required />
+										<span class='help-block'>
+											{% for error in comment_form.date.errors %}
+												{{error}}
+											{% endfor %}
+										</span>
+									</div>
+								</div>
+
+								<div class="form-group" id="add-comment-area">
+									{% rich_edit comment_form.comment %}
+									<span class='help-block'>
+										{% for error in comment_form.comment.errors %}
+											{{error}}
+										{% endfor %}
+									</span>
+								</div>
+							</div>
+					  	</div>
+
+						<div class="modal-footer">
+							<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">{%  trans "Cancel" %}</button>
+							<button type="submit" class="btn btn-primary">{%  trans "Save changes" %}</button>
+					  	</div>
+					</form>
+				</div>
+			</div>
+		</div>
+    <div id='comment_edit_modals'>
+    </div>
+	</div>
+{% endblock %}
