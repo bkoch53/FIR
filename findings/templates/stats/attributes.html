@@ -193,9 +193,9 @@ $(document).ready(function() {
     weekStart: 1
   });
 
-  $('#refresh').click(function (observation) {
+  $('#refresh').click(function (event) {
   	refresh_stats();
-  	observation.probservationDefault();
+  	event.preventDefault();
   });
 
   // Only allow selection of several attributes if they have the same unit

@@ -51,7 +51,7 @@
     codeMirror.setOption('onDragEvent', function(data, e) {
       if (e.type === "drop") {
         e.stopPropagation();
-        e.probservationDefault();
+        e.preventDefault();
         return inlineattach.onDrop(e);
       }
     });
@@ -78,7 +78,7 @@
     codeMirror.on('drop', function(data, e) {
       if (inlineattach.onDrop(e)) {
         e.stopPropagation();
-        e.probservationDefault();
+        e.preventDefault();
         return true;
       } else {
         return false;

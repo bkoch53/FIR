@@ -102,11 +102,11 @@ $(function () {
   }
 
   // When you click on 'alert', display submenu or modal
-  $('#details-actions-alert').click(function (observation) {
+  $('#details-actions-alert').click(function (event) {
     if ($(this).data('url') == undefined) {
       $('.details-actions-supmenu').hide();
       $('#details-actions-alert-bls').show();
-      observation.probservationDefault();
+      event.preventDefault();
     }
     else {
       get_template($(this));
@@ -114,7 +114,7 @@ $(function () {
   });
 
   // A click on a submenu displays the modal
-  $('.details-alert-bl').click(function (observation) {
+  $('.details-alert-bl').click(function (event) {
     get_template($(this));
   });
 
@@ -127,7 +127,7 @@ $(function () {
     editors["id_body"] = init_simplemde($("#id_body"));
 
     // Activate 'Send Email' button
-    $('#send_email').click(function (observation) {
+    $('#send_email').click(function (event) {
       send_email();
     });
   });

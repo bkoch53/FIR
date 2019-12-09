@@ -3,12 +3,12 @@
 function update_async_modals(elt) {
 	if(!elt) {
 		$('.modal-async').on('click', function (e) {
-			e.probservationDefault();
+			e.preventDefault();
 			ajax_action($(this), modal_action);
 		});
 	} else {
 		$(elt).find('.modal-async').on('click', function (e) {
-			e.probservationDefault();
+			e.preventDefault();
 			ajax_action($(this), modal_action);
 		});
 	}
@@ -40,7 +40,7 @@ function modal_action(data, target_id) {
 	target.first().focus();
 	target.on('click', 'button[type=submit]', function(e) {
 		e.stopPropagation();
-		e.probservationDefault();
+		e.preventDefault();
 		var form = $(this).parents('form:first');
 		var data = form.serialize();
 		$.ajax({

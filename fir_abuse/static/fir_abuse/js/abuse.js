@@ -37,7 +37,7 @@ $(function () {
     });
 
     // Avoid showing the real one
-    e.probservationDefault();
+    e.preventDefault();
 
     // Display contextual menu
     $(".custom-menu")
@@ -115,7 +115,7 @@ $(function () {
 
     editors["abuse_body"] = init_simplemde($("#abuse_body"));
     // Activate 'Send Email' button
-    $('#send_abuse_email').click(function (observation) {
+    $('#send_abuse_email').click(function (event) {
       send_email();
     });
     $('#sendAbuseEmail').on('shown.bs.modal', function (e) {

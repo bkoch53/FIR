@@ -9,7 +9,7 @@ $(function () {
 	$('#details-actions-add-link').click(function (event) {
 		$('.details-actions-supmenu').hide();
 		$('#details-actions-add').show();
-		event.probservationDefault();
+		event.preventDefault();
 	});
 
 	$('#details-container').click(function (event) {
@@ -22,7 +22,7 @@ $(function () {
 	$('#details-add-file').click(function (event) {
 		$('#details-files').removeClass('hidden');
 		$('#id_file').click();
-		event.probservationDefault();
+		event.preventDefault();
 	});
 
 	$("#id_file").change(function() {
@@ -58,7 +58,7 @@ $(function () {
 		$('#attribute_form select:first').focus();
 		$('#show_attribute_form').addClass('hidden');
 
-		event.probservationDefault();
+		event.preventDefault();
 	});
 
 	$('#attributes select').change(function () {
@@ -69,7 +69,7 @@ $(function () {
 		$('#attributes').removeClass('hidden');
 		$('#show_attribute_form a').click();
 
-		event.probservationDefault();
+		event.preventDefault();
 	});
 
 	update_attribute_placeholder();

@@ -68,8 +68,8 @@ function render_results(data) {
   $('.tagsinput').tagsInput();
 
   // Send button
-  $("#send-to-yeti").click(function(observation) {
-    observation.probservationDefault();
+  $("#send-to-yeti").click(function(event) {
+    event.preventDefault();
     var all_tags = $(".all-tags").val().split(',');
     var observables = []
 
@@ -88,15 +88,15 @@ function render_results(data) {
   });
 
   // toggle buttons
-  $("#toggle-send").click(function(observation) {
-    observation.probservationDefault();
+  $("#toggle-send").click(function(event) {
+    event.preventDefault();
     $("div.send").toggle();
     $("div.read").toggle();
     $(this).text($(this).text() == "Cancel" ? "Send to Yeti..." : "Cancel");
   });
 
   // "Select all" checkbox
-  $("input.check-all").click(function(observation) {
+  $("input.check-all").click(function(event) {
     state = this.checked;
     targetClass = $(this).data('target');
     $("."+targetClass+" input[type=checkbox]").prop("checked", state);
