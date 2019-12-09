@@ -60,26 +60,26 @@ $(function () {
 	});
 
 	// Change sort when clicking on a column title
-	$('.finding_display').on('click', 'thead a', function (observation) {
+	$('.finding_display').on('click', 'thead a', function (event) {
 		refresh_display($(this));
 
-		observation.probservationDefault();
+		event.preventDefault();
 	});
 
 	// Change page when clicking on a pagination link
-	$('.finding_display').on('click', 'a.paginate', function(observation) {
+	$('.finding_display').on('click', 'a.paginate', function(event) {
 		refresh_display($(this));
 
-		observation.probservationDefault();
+		event.preventDefault();
 	});
 
 	// Star/Unstar findings
-	$('.finding_display').on('click', 'a.star', function(observation) {
+	$('.finding_display').on('click', 'a.star', function(event) {
 		var link = $(this);
 		var url = link.attr('href');
 		$.getJSON(url, toggle_star(link));
 
-		observation.probservationDefault();
+		event.preventDefault();
 	});
 
 });

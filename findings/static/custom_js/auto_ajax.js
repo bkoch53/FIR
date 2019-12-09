@@ -20,7 +20,7 @@ function submit_form(form) {
 		// Reset form
 		form.trigger('reset');
 
-		// Send observations for custom behavior
+		// Send event for custom behavior
 		form.trigger('fir.form.success');
 
 		// Trigger page action with results
@@ -68,17 +68,17 @@ function submit_form(form) {
 
 $(function () {
 	// Submit forms over ajax
-	$('body').on('submit', 'form[data-ajaxform]', function (observation) {
+	$('body').on('submit', 'form[data-ajaxform]', function (event) {
 		submit_form($(this));
 
-		observation.probservationDefault();
+		event.preventDefault();
 	});
 
 	// Submit forms using special link
-	$('body').on('click', 'a.submit', function (observation) {
+	$('body').on('click', 'a.submit', function (event) {
 		$(this).parents('form:first').submit();
 
-		observation.probservationDefault();
+		event.preventDefault();
 	});
 
 	// Enable datetimepickers

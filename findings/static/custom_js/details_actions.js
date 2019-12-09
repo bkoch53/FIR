@@ -6,23 +6,23 @@ function Z(i) {
 }
 
 $(function () {
-	$('#details-actions-add-link').click(function (observation) {
+	$('#details-actions-add-link').click(function (event) {
 		$('.details-actions-supmenu').hide();
 		$('#details-actions-add').show();
-		observation.probservationDefault();
+		event.probservationDefault();
 	});
 
-	$('#details-container').click(function (observation) {
+	$('#details-container').click(function (event) {
 		$('.details-actions-supmenu').hide();
 	});
 
 	//
 	// File Uploads
 	//
-	$('#details-add-file').click(function (observation) {
+	$('#details-add-file').click(function (event) {
 		$('#details-files').removeClass('hidden');
 		$('#id_file').click();
-		observation.probservationDefault();
+		event.probservationDefault();
 	});
 
 	$("#id_file").change(function() {
@@ -53,29 +53,29 @@ $(function () {
 		$('#attribute-value').attr('placeholder', placeholder);
 	}
 
-	$('#show_attribute_form a').click(function (observation) {
+	$('#show_attribute_form a').click(function (event) {
 		$('#attribute_form').removeClass('hidden');
 		$('#attribute_form select:first').focus();
 		$('#show_attribute_form').addClass('hidden');
 
-		observation.probservationDefault();
+		event.probservationDefault();
 	});
 
 	$('#attributes select').change(function () {
 		update_attribute_placeholder();
 	});
 
-	$('#details-add-attribute').click(function (observation) {
+	$('#details-add-attribute').click(function (event) {
 		$('#attributes').removeClass('hidden');
 		$('#show_attribute_form a').click();
 
-		observation.probservationDefault();
+		event.probservationDefault();
 	});
 
 	update_attribute_placeholder();
 
 	// Set up form for new comment
-	$('#details-actions-comment').click(function (observation) {
+	$('#details-actions-comment').click(function (event) {
 
 		$("#addComment").modal('toggle');
 
@@ -91,7 +91,7 @@ $(function () {
 	});
 
 	// Set up form for update
-	$('#tab_comments').on('click', '.edit-comment', function (observation) {
+	$('#tab_comments').on('click', '.edit-comment', function (event) {
 		var form = $('#addComment form');
 		var comment_id = $(this).data('comment-id');
 
@@ -116,7 +116,7 @@ $(function () {
 	});
 
 	// Custom behavior when comment is added
-	$('#addComment').on('fir.form.success', function (observation) {
+	$('#addComment').on('fir.form.success', function (event) {
 		// Dismiss modal
 		editors["id_comment"].value("");
 		$('#addComment').modal('hide');
@@ -128,15 +128,15 @@ $(function () {
 			$('#comment-count').text(count + 1);
 		}
 
-		observation.stopPropagation();
+		event.stopPropagation();
 	});
 
 	// Custom behavior when comment is removed
-	$('#tab_comments').on('fir.form.success', function (observation) {
+	$('#tab_comments').on('fir.form.success', function (event) {
 		// Update comment count
 		var count = parseInt($('#comment-count').text());
 		$('#comment-count').text(count - 1);
 
-		observation.stopPropagation();
+		event.stopPropagation();
 	});
 });
