@@ -34,9 +34,9 @@ Core FIR notifications:
 * 'observation:created': new observation
 * 'observation:updated': update of an observation
 * 'finding:created': new finding
-* 'finding:updated': update of an finding
+* 'finding:updated': update of a finding
 * 'observation:commented': new comment added to an observation
-* 'finding:commented': new comment added to an finding
+* 'finding:commented': new comment added to a finding
 * 'observation:status_changed': observation status changed
 * 'finding:status_changed': finding status changed
 

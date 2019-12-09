@@ -4,10 +4,10 @@ Follow the generic plugin installation instructions in [the FIR wiki](https://gi
 
 ## Usage
 
-The `fir_nuggets` plugin allows you to build a forensic investigation timeline within an finding. It should be used as a replacement for your usual note-taking app when carrying out a forensic investigation. Of course, by **nugget** we mean **gold** and not **chicken**.
+The `fir_nuggets` plugin allows you to build a forensic investigation timeline within a finding. It should be used as a replacement for your usual note-taking app when carrying out a forensic investigation. Of course, by **nugget** we mean **gold** and not **chicken**.
 Nuggets are displayed in the **finding followup** in `timestamp` (see below) chronological order. You can add nuggets in any order you want, and the investigation or attack timeline will be automatically created for you.
 
-A nugget is basically an artifact or anything noteworthy that could be found during an investigation. To add a nugget to an finding, just click on `Add` then on `Nugget`. You will be presented with the following form:
+A nugget is basically an artifact or anything noteworthy that could be found during an investigation. To add a nugget to a finding, just click on `Add` then on `Nugget`. You will be presented with the following form:
 
 ![Nugget form](nugget_form.png)
 

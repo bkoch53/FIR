@@ -113,7 +113,7 @@ $(document).ready(function() {
                             {%  has_perm 'findings.handle_findings' model=form as can_handle_finding %}
                             {% if can_handle_finding %}
 							<div class="col-sm-3 col-sm-offset-2 checkbox aligned-with-stack{% if form.is_finding.errors%} has-error{%endif%}">
-								<label data-toggle='collapse' data-target='#finding_fields'>{{ form.is_finding }} {% trans "Is an finding" %}</label>
+								<label data-toggle='collapse' data-target='#finding_fields'>{{ form.is_finding }} {% trans "Is a finding" %}</label>
 								{% include 'observations/_form_errors.html' with errors=form.is_finding.errors %}
 							</div>
                             {% endif %}

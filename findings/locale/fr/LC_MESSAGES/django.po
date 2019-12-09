@@ -369,7 +369,7 @@ msgid "Confidentiality"
 msgstr "Confidentialité"
 
 #: templates/observations/new.html:116
-msgid "Is an finding"
+msgid "Is a finding"
 msgstr "Est un finding"
 
 #: templates/observations/new.html:128

@@ -6,7 +6,7 @@ Follow the generic plugin installation instructions in [the FIR wiki](https://gi
 
 Using the `fir_todos` plugin is pretty straightforward.
 
-* To **create** a task, open an finding and click `Add`, then `Todo`. Specify an action to be done, and an accountable party (you may select the "CERT" business line for tasks atrributed to you). To save the changes, click on the `+` sign at the end of the line.
+* To **create** a task, open a finding and click `Add`, then `Todo`. Specify an action to be done, and an accountable party (you may select the "CERT" business line for tasks atrributed to you). To save the changes, click on the `+` sign at the end of the line.
 
 * **Remove** a task by clicking on the cross sign on the corresponding line.
 
@@ -30,16 +30,16 @@ The template will be activated for each finding matching all the criteria **that
 
 Note that *Concerned business line* is a little bit special: you only need one business line in order to match the template, and parents are considered. This means that if you create a template with *Concerned business lines* set to *BL1* and *BL2*, the following will be true:
 
-* An finding for *BL1* will match
-* An finding for *BL2* will match
-* An finding for *BL1* and *BL2* will match
-* An finding for *BL1 > Sub BL1* will match
+* A finding for *BL1* will match
+* A finding for *BL2* will match
+* A finding for *BL1* and *BL2* will match
+* A finding for *BL1 > Sub BL1* will match
 
 #### Todo Items for your templates
 
 When creating Todo Items for your templates, be aware that the *business line* is optionnal. When this field is not specified, a todo item will be created for each finding *business line* that matched the template.
 
-Example: if you have a template for *BL1* with a Todo item "Do Something" with no *business line* specified, and you create an finding for *BL1 > Sub BL1*, *BL1 > Sub BL2* and *BL2*, you will have the following todos created:
+Example: if you have a template for *BL1* with a Todo item "Do Something" with no *business line* specified, and you create a finding for *BL1 > Sub BL1*, *BL1 > Sub BL2* and *BL2*, you will have the following todos created:
 
 * Do Something (BL1 > Sub BL1)
 * Do Something (BL1 > Sub BL2)
