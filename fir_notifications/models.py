@@ -61,7 +61,7 @@ class NotificationPreference(models.Model):
         ordering = ['user', 'observation', 'method']
 
 
-if not settings.NOTIFICATIONS_MERGE_INCIDENTS_AND_EVENTS:
+if not settings.NOTIFICATIONS_MERGE_FINDINGS_AND_OBSERVATIONS:
     @notification_observation('observation:created', model_created, Finding, verbose_name=_('Observation created'),
                         section=_('Observation'))
     def observation_created(sender, instance, **kwargs):
@@ -107,7 +107,7 @@ def finding_created(sender, instance, **kwargs):
 @notification_observation('finding:updated', model_updated, Finding, verbose_name=_('Finding updated'),
                     section=_('Finding'))
 def finding_updated(sender, instance, **kwargs):
-    if not settings.NOTIFICATIONS_MERGE_INCIDENTS_AND_EVENTS and not instance.is_finding:
+    if not settings.NOTIFICATIONS_MERGE_FINDINGS_AND_OBSERVATIONS and not instance.is_finding:
         return None, None
     return instance, instance.concerned_business_lines
 
@@ -115,7 +115,7 @@ def finding_updated(sender, instance, **kwargs):
 @notification_observation('finding:commented', post_save, Comments, verbose_name=_('Finding commented'),
                     section=_('Finding'))
 def finding_commented(sender, instance, **kwargs):
-    if not instance.finding and not settings.NOTIFICATIONS_MERGE_INCIDENTS_AND_EVENTS and not instance.finding.is_finding:
+    if not instance.finding and not settings.NOTIFICATIONS_MERGE_FINDINGS_AND_OBSERVATIONS and not instance.finding.is_finding:
         return None, None
     if instance.action.name in ['Opened', 'Blocked', 'Closed']:
         return None, None
@@ -125,6 +125,6 @@ def finding_commented(sender, instance, **kwargs):
 @notification_observation('finding:status_changed', model_status_changed, Finding, verbose_name=_('Finding status changed'),
                     section=_('Finding'))
 def finding_status_changed(sender, instance, **kwargs):
-    if not settings.NOTIFICATIONS_MERGE_INCIDENTS_AND_EVENTS and not instance.is_finding:
+    if not settings.NOTIFICATIONS_MERGE_FINDINGS_AND_OBSERVATIONS and not instance.is_finding:
         return None, None
     return instance, instance.concerned_business_lines

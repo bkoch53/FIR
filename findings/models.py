@@ -167,7 +167,7 @@ class FindingCategory(models.Model):
 # Core models ================================================================
 
 @tree_authorization(fields=['concerned_business_lines', ], tree_model='findings.BusinessLine',
-                    owner_field='opened_by', owner_permission=settings.INCIDENT_CREATOR_PERMISSION)
+                    owner_field='opened_by', owner_permission=settings.FINDING_CREATOR_PERMISSION)
 @link_to(File)
 @link_to(Artifact)
 class Finding(FIRModel, models.Model):

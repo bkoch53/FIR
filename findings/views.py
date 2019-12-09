@@ -99,7 +99,7 @@ def can_view_statistics(user):
 
 
 comment_permissions = ['findings.handle_findings', ]
-if getattr(settings, 'INCIDENT_VIEWER_CAN_COMMENT', False):
+if getattr(settings, 'FINDING_VIEWER_CAN_COMMENT', False):
     comment_permissions.append('findings.view_findings')
 
 
@@ -252,7 +252,7 @@ def followup(request, finding_id, authorization_target=None):
     return render(
         request,
         'findings/followup.html',
-        {'finding': i, 'comments': comments, 'finding_show_id': settings.INCIDENT_SHOW_ID}
+        {'finding': i, 'comments': comments, 'finding_show_id': settings.FINDING_SHOW_ID}
     )
 
 
@@ -309,7 +309,7 @@ def details(request, finding_id, authorization_target=None):
          "attributes": attributes,
          "valid_attributes": valid_attributes,
          "comments": comments,
-         "finding_show_id": settings.INCIDENT_SHOW_ID}
+         "finding_show_id": settings.FINDING_SHOW_ID}
     )
 
 
@@ -2215,7 +2215,7 @@ def finding_display(request, filter, finding_view=True, paginated=True):
         'finding_view': finding_view,
         'order_param': order_param,
         'asc': asc,
-        'finding_show_id': settings.INCIDENT_SHOW_ID
+        'finding_show_id': settings.FINDING_SHOW_ID
     })
 
 

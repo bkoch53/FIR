@@ -170,16 +170,16 @@ TEMPLATES = [
 ]
 
 # Show finding IDs in views?
-INCIDENT_SHOW_ID = False
+FINDING_SHOW_ID = False
 
 # Finding ID prefix in views and links
-INCIDENT_ID_PREFIX = "FID:"
+FINDING_ID_PREFIX = "FID:"
 
 # Permission added to the finding created by user, None for no permission
-INCIDENT_CREATOR_PERMISSION = 'findings.view_findings'
+FINDING_CREATOR_PERMISSION = 'findings.view_findings'
 
 # If you can see an observation/finding, you can comment it!
-INCIDENT_VIEWER_CAN_COMMENT = True
+FINDING_VIEWER_CAN_COMMENT = True
 
 
 # Escape HTML when displaying markdown
@@ -223,8 +223,8 @@ USER_SELF_SERVICE = {
 }
 
 # Put notification observations you don't want in this tuple
-# Example: NOTIFICATIONS_DISABLED_EVENTS = ('observation:created', 'finding:created')
-NOTIFICATIONS_DISABLED_EVENTS = ()
+# Example: NOTIFICATIONS_DISABLED_OBSERVATIONS = ('observation:created', 'finding:created')
+NOTIFICATIONS_DISABLED_OBSERVATIONS = ()
 
 # Send 'finding:*' notification observations for both Observation and Finding if True
-NOTIFICATIONS_MERGE_INCIDENTS_AND_EVENTS = False
+NOTIFICATIONS_MERGE_FINDINGS_AND_OBSERVATIONS = False

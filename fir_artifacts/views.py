@@ -19,7 +19,7 @@ def artifacts_correlations(request, artifact_id):
         raise PermissionDenied
     return render(request, 'fir_artifacts/correlation_list.html', {'correlations': correlations,
                                                                    'artifact': a,
-                                                                   'finding_show_id': settings.INCIDENT_SHOW_ID})
+                                                                   'finding_show_id': settings.FINDING_SHOW_ID})
 
 
 @login_required

@@ -44,17 +44,17 @@ Core FIR notifications:
 
 ### Observations
 
-You can disable notification observations in the settings using the key `NOTIFICATIONS_DISABLED_EVENTS`:
+You can disable notification observations in the settings using the key `NOTIFICATIONS_DISABLED_OBSERVATIONS`:
 
 ```python
-NOTIFICATIONS_DISABLED_EVENTS = ('observation:created', 'finding:created')
+NOTIFICATIONS_DISABLED_OBSERVATIONS = ('observation:created', 'finding:created')
 ```
 
 If you don't want to send different notification observations for Findings and Observations, you  should enable this setting:
 
 ```python
 # Send 'finding:*' notification observations for both Observation and Finding if True
-NOTIFICATIONS_MERGE_INCIDENTS_AND_EVENTS = True
+NOTIFICATIONS_MERGE_FINDINGS_AND_OBSERVATIONS = True
 ```
 
 ### Celery

@@ -22,6 +22,6 @@ def has_perm(context, *permissions, **kwargs):
 @register.simple_tag(takes_context=True)
 def can_comment(context, finding):
     permissions = ['findings.handle_findings', ]
-    if getattr(settings, 'INCIDENT_VIEWER_CAN_COMMENT', False):
+    if getattr(settings, 'FINDING_VIEWER_CAN_COMMENT', False):
         permissions.append('findings.view_findings')
     return finding.has_perm(context['user'], permissions)
