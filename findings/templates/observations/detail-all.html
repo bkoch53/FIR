@@ -109,7 +109,11 @@
 
 				<div class='widget' id='description'>
 					<h4 class='widget'>{%  trans "Description" %}</h4>
-					<p>{{ observation.description|markdown }}</p>
+					<table>
+						<tr>
+							<td>{{ observation.description|markdown }}</td>
+						</tr>
+					</table>
 				</div>
 
 				{% plugin_point 'details_main' %}
