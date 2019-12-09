@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.org/bkoch53/FIR.svg?branch=master)](https://travis-ci.org/bkoch53/FIR)
+[![Travis Build Status](https://travis-ci.org/bkoch53/FIR.svg?branch=master)](https://travis-ci.org/bkoch53/FIR)
+
+![](https://github.com/bkoch53/FIR/workflows/Docker%20Image%20CI/badge.svg)
 
 # What is FIR? Who is it for?
 
